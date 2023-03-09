@@ -5,7 +5,7 @@
 (package-initialize)
 
 ;; Loads Custom Functions File
-(load "~/.emacs.rc/rc.el")
+;; (load "~/.emacs.rc/rc.el")
 
 ;;
 ;; Basic Definitions
@@ -26,9 +26,6 @@
 ;; Enables Column Number Mode
 (column-number-mode 1)
 
-;; Enables CUA Mode
-(cua-mode 1)
-
 ;; Set "GNU" Style Indenting For c
 (setq c-default-style "linux"
       c-basic-offset 4)
@@ -46,7 +43,7 @@
 ;; Theme Definition
 ;;
 
-(rc/require 'gruber-darker-theme)
+;; (rc/require 'gruber-darker-theme)
 (load-theme 'gruber-darker t)
 
 ;;
@@ -59,4 +56,4 @@
 ;; Custom Packges
 ;;
 
-(rc/require-one-package 'sml-mode)
+;; (rc/require-one-package 'sml-mode)
