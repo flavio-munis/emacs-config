@@ -46,8 +46,8 @@
 ;; Theme Definition
 ;;
 
-(rc/require 'gruber-darker-theme)
-(load-theme 'gruber-darker t)
+(rc/require 'vscode-dark-plus-theme)
+(load-theme 'vscode-dark-plus t)
 
 ;;
 ;; Font Definition
