@@ -48,6 +48,13 @@
 ;;; Sml Mode
 (rc/require-one-package 'sml-mode)
 
-;;; Auto Complete Package
+;;; Auto Complete
 (rc/require-one-package 'auto-complete)
 (ac-config-default)
+
+;; Highlight Symbol
+(rc/require-one-package 'highlight-symbol)
+(global-set-key [(control f3)] 'highlight-symbol)
+(global-set-key [f3] 'highlight-symbol-next)
+(global-set-key [(shift f3)] 'highlight-symbol-prev)
+(global-set-key [(meta f3)] 'highlight-symbol-query-replace)
