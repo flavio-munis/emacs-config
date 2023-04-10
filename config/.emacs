@@ -52,9 +52,18 @@
 (rc/require-one-package 'auto-complete)
 (ac-config-default)
 
-;; Highlight Symbol
+;;; Highlight Symbol
 (rc/require-one-package 'highlight-symbol)
 (global-set-key [(control f3)] 'highlight-symbol)
 (global-set-key [f3] 'highlight-symbol-next)
 (global-set-key [(shift f3)] 'highlight-symbol-prev)
 (global-set-key [(meta f3)] 'highlight-symbol-query-replace)
+
+;;; Maxima Mode
+(rc/require-one-package 'maxima)
+(add-hook 'maxima-mode-hook #'maxima-hook-function)
+(add-hook 'maxima-inferior-mode-hook #'maxima-hook-function)
+(add-to-list 'auto-mode-alist
+			 (cons "\\.mac\\'" 'maxima-mode))
+(add-to-list 'interpreter-mode-alist
+			 (cons "maxima" 'maxima-mode))
