@@ -45,6 +45,9 @@
 ;; Custom Packges
 ;;
 
+;;; Use Package
+(rc/require-one-package 'use-package)
+
 ;;; Sml Mode
 (rc/require-one-package 'sml-mode)
 
@@ -60,10 +63,10 @@
 (global-set-key [(meta f3)] 'highlight-symbol-query-replace)
 
 ;;; Maxima Mode
-(rc/require-one-package 'maxima)
-(add-hook 'maxima-mode-hook #'maxima-hook-function)
-(add-hook 'maxima-inferior-mode-hook #'maxima-hook-function)
-(add-to-list 'auto-mode-alist
-			 (cons "\\.mac\\'" 'maxima-mode))
-(add-to-list 'interpreter-mode-alist
-			 (cons "maxima" 'maxima-mode))
+(add-to-list 'load-path "~/.emacs.local/")
+(use-package maxima
+  :init
+  (add-to-list 'auto-mode-alist
+		 (cons "\\.mac\\'" 'maxima-mode))
+  (add-to-list 'interpreter-mode-alist
+		 (cons "maxima" 'maxima-mode)))
