@@ -61,12 +61,3 @@
 (global-set-key [f3] 'highlight-symbol-next)
 (global-set-key [(shift f3)] 'highlight-symbol-prev)
 (global-set-key [(meta f3)] 'highlight-symbol-query-replace)
-
-;;; Maxima Mode
-(add-to-list 'load-path "~/.emacs.local/")
-(use-package maxima
-  :init
-  (add-to-list 'auto-mode-alist
-		 (cons "\\.mac\\'" 'maxima-mode))
-  (add-to-list 'interpreter-mode-alist
-		 (cons "maxima" 'maxima-mode)))
