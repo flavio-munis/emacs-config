@@ -11,6 +11,7 @@
   - [[#useful-functions][Useful Functions]]
 - [[#packages][Packages]]
   - [[#org-mode][Org Mode]]
+  - [[#repeat-mode][Repeat Mode]]
   - [[#which-key][Which-Key]]
 
 * General Settings
@@ -104,6 +105,16 @@ Restarts Emacs.
 (use-package org-bullets
   :ensure t)
 (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+#+end_src
+
+** Repeat Mode
+#+begin_src emacs-lisp
+(use-package repeat
+  :ensure t
+  :hook (after-init . repeat-mode)
+  :custom
+  (repeat-too-dangerous '(kill-this-buffer)
+  (repeat-exit-timeout 5)))
 #+end_src
 
 ** Which-Key
