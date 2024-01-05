@@ -94,10 +94,10 @@ Set custom font, and makes all comments be in italic.
                             :prefix "C-c")
 
     (my-leader-def
-     "f" '(find-file :wk "Find File")
-     "c f" '((lambda () (interactive) (find-file "~/.config/emacs/config.org")) :wk "Edit emacs config")
-     "TAB TAB" '(comment-line :wk "Comment Line(s)")
-     "r" '(lambda () (interactive) (org-babel-load-file (expand-file-name "~/.emacs.d/config.org"))) :wk "Reload Emacs Config"))
+     "f" '(find-file :wk "find file")
+     "c f" '((lambda () (interactive) (find-file "~/.config/emacs/config.org")) :wk "edit emacs config")
+     "TAB TAB" '(comment-line :wk "comment Line(s)")
+     "r" '(lambda () (interactive) (org-babel-load-file (expand-file-name "~/.emacs.d/config.org"))) :wk "reload emacs config"))
 #+end_src
 
 * Packages
@@ -117,6 +117,11 @@ Set custom font, and makes all comments be in italic.
   (use-package org-bullets
     :ensure t)
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+#+end_src
+
+*** Disable Eletric Indent
+#+begin_src emacs-lisp
+  (electric-indent-mode -1)
 #+end_src
 
 ** Repeat Mode
