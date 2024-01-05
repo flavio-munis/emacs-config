@@ -7,7 +7,7 @@
 ** General Settings
 #+begin_src emacs-lisp
 (setq inhibit-splash-screen t)        ;; Stops Startup Message
-;(menu-bar-mode -1)                    ;; Disable Menu Bar
+(menu-bar-mode -1)                    ;; Disable Menu Bar
 (tool-bar-mode -1)                    ;; Disable Tools Bar
 (scroll-bar-mode -1)                  ;; Disable Scroll Bar
 (column-number-mode 1)                ;; Enables Column Number Mode
@@ -30,11 +30,14 @@ Install and load zenburn theme.
 #+end_src
 
 ** Font
-Set custom font.
+Set custom font, and makes all comments be in italic.
 #+begin_src emacs-lisp
 (add-to-list 'default-frame-alist
 	       '(font . "Ubuntu Mono-16"))
 (set-face-attribute 'default t :font "Ubuntu Mono-16")
+
+(set-face-attribute 'font-lock-comment-face nil
+  :slant 'italic)
 #+end_src
 
 ** Useful Functions
@@ -45,3 +48,6 @@ Restarts Emacs.
   (org-babel-load-file (expand-file-name "~/.emacs.d/config.org")))
 (global-set-key (kbd "C-c r") 'config-reload)
 #+end_src
+
+
+* Other Packages
