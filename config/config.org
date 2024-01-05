@@ -3,19 +3,37 @@
 #+STARTUP: showeverything
 
 * LOAD FIRST
-** General Settings
 
+** General Settings
 #+begin_src emacs-lisp
 (setq inhibit-splash-screen t)        ;; Stops Startup Message
-(menu-bar-mode -1)                    ;; Disable Menu Bar
+;(menu-bar-mode -1)                    ;; Disable Menu Bar
 (tool-bar-mode -1)                    ;; Disable Tools Bar
 (scroll-bar-mode -1)                  ;; Disable Scroll Bar
 (column-number-mode 1)                ;; Enables Column Number Mode
-(cua-mode 1)                          ;; Enables CUA Mode
-(setq c-default-style "linux"         ;; Set "GNU" Style Indenting For c
-      c-basic-offset 4)           
+(cua-mode 1)                          ;; Enables CUA Mode           
 (electric-pair-mode 1)                ;; Enable Eletric Pair Mode
 (setq-default tab-width 4)            ;; Set Default Tab Space To 4
 (add-hook 'window-setup-hook          ;; Initialize Emacs in Full Screen Mode
 		  'toggle-frame-maximized t)
+(setq make-bakcup-files nil)          ;; Disable Automatic Backup
+(setq auto-save-default nil)          ;; Disable Automatic Save
+#+end_src
+
+** Theme
+Install and load zenburn theme.
+#+begin_src emacs-lisp
+(use-package zenburn-theme
+:ensure t
+:config
+(load-theme 'zenburn t))
+#+end_src
+
+** Useful Functions
+Restarts Emacs
+#+begin_src emacs-lisp
+(defun config-reload ()
+  (interactive)
+  (org-babel-load-file (expand-file-name "~/.emacs.d/config.org")))
+(global-set-key (kbd "C-c r") 'config-reload)
 #+end_src
