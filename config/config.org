@@ -85,23 +85,31 @@ Set custom font, and makes all comments be in italic.
 ** KeyBindings
 #+begin_src emacs-lisp
   (use-package general
-    :ensure t
-    :config
+	:ensure t
+	:config
 
-    ;; Global Keybind for shell
-    (general-define-key
-     "<f9>" 'shell)
+	;; Global Keybind for shell
+	(general-define-key
+	 "<f9>" 'shell)
 
-    ;; Creates a prefix caller
-    (general-create-definer my-leader-def
-      :prefix "C-c"
-      :keymaps 'override)
+	;; Creates a prefix caller
+	(general-create-definer my-leader-def
+	  :prefix "C-c"
+	  :keymaps 'override)
 
-    (my-leader-def
-     "f f" '(find-file :wk "find file")
-     "f c" '((lambda () (interactive) (find-file "~/.config/emacs/config.org")) :wk "edit emacs config")
-     "TAB TAB" '(comment-line :wk "comment Line(s)")
-     "r" '(lambda () (interactive) (org-babel-load-file (expand-file-name "~/.emacs.d/config.org"))) :wk "reload emacs config"))
+	(my-leader-def
+	  "f" '(:ignore t :wk "find/edit") 
+	  "f f" '(find-file :wk "find file")
+	  "f c" '((lambda () (interactive) (find-file "~/.config/emacs/config.org")) :wk "edit emacs config"))
+
+	(my-leader-def
+	  "TAB TAB" '(comment-line :wk "comment Line(s)")
+	  "r" '((lambda () (interactive) (org-babel-load-file (expand-file-name "~/.emacs.d/config.org"))) :wk "reload emacs config"))
+
+	(my-leader-def
+	  "h" '(:ignore t :wk "help")
+	  "h f" '(describe-function :wk "describe function")
+	  "h v" '(describe-variable :wk "describe variable")))
 #+end_src
 
 * Packages
