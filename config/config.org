@@ -24,13 +24,21 @@
 Install and load zenburn theme.
 #+begin_src emacs-lisp
 (use-package zenburn-theme
-:ensure t
-:config
-(load-theme 'zenburn t))
+  :ensure t
+  :config
+  (load-theme 'zenburn t))
+#+end_src
+
+** Font
+Set custom font.
+#+begin_src emacs-lisp
+(add-to-list 'default-frame-alist
+	       '(font . "Ubuntu Mono-16"))
+(set-face-attribute 'default t :font "Ubuntu Mono-16")
 #+end_src
 
 ** Useful Functions
-Restarts Emacs
+Restarts Emacs.
 #+begin_src emacs-lisp
 (defun config-reload ()
   (interactive)
