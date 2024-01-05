@@ -2,22 +2,48 @@
 #+AUTHOR: FLÁVIO MUNIZ
 #+STARTUP: showeverything
 
-* LOAD FIRST
+* General Settings
 
-** General Settings
+** Graphical Interface
+
+*** Disable Startup Message, Tools, Scrool and Menu Bar
 #+begin_src emacs-lisp
-(setq inhibit-splash-screen t)        ;; Stops Startup Message
-(menu-bar-mode -1)                    ;; Disable Menu Bar
-(tool-bar-mode -1)                    ;; Disable Tools Bar
-(scroll-bar-mode -1)                  ;; Disable Scroll Bar
-(column-number-mode 1)                ;; Enables Column Number Mode
-(cua-mode 1)                          ;; Enables CUA Mode           
-(electric-pair-mode 1)                ;; Enable Eletric Pair Mode
-(setq-default tab-width 4)            ;; Set Default Tab Space To 4
-(add-hook 'window-setup-hook          ;; Initialize Emacs in Full Screen Mode
+(setq inhibit-splash-screen t)
+(menu-bar-mode -1)
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
+#+end_src
+
+*** Enable Column/Line Number and Truncated Lines
+#+begin_src emacs-lisp
+(column-number-mode 1)
+(global-display-line-numbers-mode 1)
+(global-visual-line-mode 1)
+#+end_src
+
+*** Full Screen at Startup
+#+begin_src emacs-lisp
+(add-hook 'window-setup-hook
 		  'toggle-frame-maximized t)
-(setq make-bakcup-files nil)          ;; Disable Automatic Backup
-(setq auto-save-default nil)          ;; Disable Automatic Save
+#+end_src
+
+** Code
+
+*** Self-Closing Parenthesis and Ctr-c Ctr-v Mode
+#+begin_src emacs-lisp
+(electric-pair-mode 1)
+(cua-mode 1)
+#+end_src
+
+*** Custom Tab Width
+#+begin_src emacs-lisp
+(setq-default tab-width 4)
+#+end_src
+
+*** Disable Auto Save and Auto Backup
+#+begin_src emacs-lisp
+(setq make-bakcup-files nil)
+(setq auto-save-default nil)
 #+end_src
 
 ** Theme
@@ -50,4 +76,4 @@ Restarts Emacs.
 #+end_src
 
 
-* Other Packages
+* Packages
