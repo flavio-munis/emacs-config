@@ -5,4 +5,5 @@ DEPLOY_DIR="$HOME/.emacs.d"
 
 echo "Configurating EMACS..."
 cp -Tabs "$DIR/config/" $DEPLOY_DIR
+touch "$DEPLOY_DIR/custom.el"
 echo "Emacs Config Files Were Succefully Deployed as SymLinks in $DEPLOY_DIR"
