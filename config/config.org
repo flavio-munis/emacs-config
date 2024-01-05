@@ -18,6 +18,7 @@
   - [[#company][Company]]
   - [[#dashboard][Dashboard]]
   - [[#diminish][Diminish]]
+  - [[#dired][Dired]]
   - [[#flycheck][Flycheck]]
   - [[#ivy-counsel][Ivy (Counsel)]]
   - [[#org-mode][Org Mode]]
@@ -56,10 +57,9 @@
 
 ** Code
 
-*** Self-Closing Parenthesis and Ctr-c Ctr-v Mode
+*** Self-Closing Parenthesis
 #+begin_src emacs-lisp
   (electric-pair-mode 1)
-  (cua-mode 1)
 #+end_src
 
 *** Custom Tab Width
@@ -285,8 +285,7 @@ one, an error is signaled."
     (setq dashboard-items '((recents . 5)
                             (agenda . 5 )
                             (bookmarks . 3)
-                            (projects . 3)
-                            (registers . 3)))
+                            (projects . 3)))
     :custom
     (dashboard-modify-heading-icons '((recents . "file-text")
                                       (bookmarks . "book")))
@@ -298,6 +297,18 @@ one, an error is signaled."
 #+begin_src emacs-lisp
   (use-package diminish
     :ensure t)
+#+end_src
+
+** Dired
+#+begin_src emacs-lisp
+  (use-package dired-open
+    :ensure t
+    :config
+    (setq dired-open-extensions '(("gif" . "xviewer")
+                                  ("jpg" . "xviewer")
+                                  ("png" . "xviewer")
+                                  ("mkv" . "mpv")
+                                  ("mp4" . "mpv"))))
 #+end_src
 
 ** Flycheck
