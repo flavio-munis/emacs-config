@@ -15,6 +15,7 @@
 - [[#packages][Packages]]
   - [[#all-the-icons][All The Icons]]
   - [[#buffer-move][Buffer Move]]
+  - [[#company][Company]]
   - [[#dashboard][Dashboard]]
   - [[#diminish][Diminish]]
   - [[#flycheck][Flycheck]]
@@ -248,6 +249,27 @@ one, an error is signaled."
         (select-window other-win))))
 #+end_src
 
+** Company
+#+begin_src emacs-lisp
+  (use-package company
+    :ensure t
+    :defer 2
+    :diminish
+    :custom
+    (company-begin-commands '(self-insert-command))
+    (company-idle-delay .1)
+    (company-minimum-prefix-length 2)
+    (company-show-numbers t)
+    (company-tooltip-align-annotations 't)
+    (global-company-mode t))
+
+  (use-package company-box
+    :ensure t
+    :after company
+    :diminish
+    :hook (company-mode . company-box-mode))
+#+end_src
+
 ** Dashboard
 #+begin_src emacs-lisp
   (use-package dashboard
@@ -291,11 +313,13 @@ one, an error is signaled."
 #+begin_src emacs-lisp
   (use-package counsel
     :ensure t
+    :diminish
     :after ivy
     :config (counsel-mode))
 
   (use-package ivy
     :ensure t
+    :diminish
     :bind
     ;; ivy-resume resumes the last Ivy-based completion.
       (("C-c C-r" . ivy-resume)
