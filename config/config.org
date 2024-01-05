@@ -8,7 +8,7 @@
   - [[#code][Code]]
   - [[#theme][Theme]]
   - [[#font][Font]]
-  - [[#useful-functions][Useful Functions]]
+  - [[#keybindings][KeyBindings]]
 - [[#packages][Packages]]
   - [[#org-mode][Org Mode]]
   - [[#repeat-mode][Repeat Mode]]
@@ -20,120 +20,132 @@
 
 *** Disable Startup Message, Tools, Scrool and Menu Bar
 #+begin_src emacs-lisp
-(setq inhibit-splash-screen t)
-(menu-bar-mode -1)
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
+  (setq inhibit-splash-screen t)
+  (menu-bar-mode -1)
+  (tool-bar-mode -1)
+  (scroll-bar-mode -1)
 #+end_src
 
 *** Enable Column/Line Number and Truncated Lines
 #+begin_src emacs-lisp
-(column-number-mode 1)
-(global-display-line-numbers-mode 1)
-(global-visual-line-mode 1)
+  (column-number-mode 1)
+  (global-display-line-numbers-mode 1)
+  (global-visual-line-mode 1)
 #+end_src
 
 *** Full Screen at Startup
 #+begin_src emacs-lisp
-(add-hook 'window-setup-hook
-		  'toggle-frame-maximized t)
+  (add-hook 'window-setup-hook
+            'toggle-frame-maximized t)
 #+end_src
 
 ** Code
 
 *** Self-Closing Parenthesis and Ctr-c Ctr-v Mode
 #+begin_src emacs-lisp
-(electric-pair-mode 1)
-(cua-mode 1)
+  (electric-pair-mode 1)
+  (cua-mode 1)
 #+end_src
 
 *** Custom Tab Width
 #+begin_src emacs-lisp
-(setq-default tab-width 4)
+  (setq-default tab-width 4)
 #+end_src
 
 *** Disable Auto Save and Auto Backup
 #+begin_src emacs-lisp
-(setq make-bakcup-files nil)
-(setq auto-save-default nil)
+  (setq make-bakcup-files nil)
+  (setq auto-save-default nil)
 #+end_src
 
 ** Theme
 Install and load zenburn theme.
 #+begin_src emacs-lisp
-(use-package zenburn-theme
-  :ensure t
-  :config
-  (load-theme 'zenburn t))
+  (use-package zenburn-theme
+    :ensure t
+    :config
+    (load-theme 'zenburn t))
 #+end_src
 
 ** Font
 Set custom font, and makes all comments be in italic.
 #+begin_src emacs-lisp
-(add-to-list 'default-frame-alist
-	       '(font . "Ubuntu Mono-14"))
-(set-face-attribute 'default t :font "Ubuntu Mono-14")
+  (add-to-list 'default-frame-alist
+             '(font . "Ubuntu Mono-14"))
+  (set-face-attribute 'default t
+                      :font "Ubuntu Mono-14")
 
-(set-face-attribute 'font-lock-comment-face nil
-  :slant 'italic)
+  (set-face-attribute 'font-lock-comment-face nil
+    :slant 'italic)
 #+end_src
 
-** Useful Functions
-Restarts Emacs.
+** KeyBindings
 #+begin_src emacs-lisp
-(defun config-reload ()
-  (interactive)
-  (org-babel-load-file (expand-file-name "~/.emacs.d/config.org")))
-(global-set-key (kbd "C-c r") 'config-reload)
+  (use-package general
+    :ensure t
+    :config
+
+    ;; Global Keybind for shell
+    (general-define-key
+     "<f9>" 'shell)
+  
+    ;; Creates a prefix caller
+    (general-create-definer my-leader-def
+                            :prefix "C-c")
+
+    (my-leader-def
+     "." '(find-file :wk "Find File")
+     "c f" '((lambda () (interactive) (find-file "~/.config/emacs/config.org")) :wk "Edit emacs config")
+     "TAB TAB" '(comment-line :wk "Comment Line(s)")
+     "r" '(lambda () (interactive) (org-babel-load-file (expand-file-name "~/.emacs.d/config.org"))) :wk "Reload Emacs Config"))
+
 #+end_src
-
-
 * Packages
 
 ** Org Mode
 *** Enable Table of Contents
 #+begin_src emacs-lisp
-(use-package toc-org
-  :ensure t
-  :commands toc-org-enable
-  :init (add-hook 'org-mode-hook 'toc-org-enable))
+  (use-package toc-org
+    :ensure t
+    :commands toc-org-enable
+    :init (add-hook 'org-mode-hook 'toc-org-enable))
 #+end_src
 
 *** Enable Org Bullets
 #+begin_src emacs-lisp
-(add-hook 'org-mode-hook 'org-indent-mode)
-(use-package org-bullets
-  :ensure t)
-(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+  (add-hook 'org-mode-hook 'org-indent-mode)
+  (use-package org-bullets
+    :ensure t)
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 #+end_src
 
 ** Repeat Mode
 #+begin_src emacs-lisp
-(use-package repeat
-  :ensure t
-  :hook (after-init . repeat-mode)
-  :custom
-  (repeat-too-dangerous '(kill-this-buffer)
-  (repeat-exit-timeout 5)))
+  (use-package repeat
+    :ensure t
+    :hook (after-init . repeat-mode)
+    :custom
+    (repeat-too-dangerous '(kill-this-buffer))
+    (repeat-exit-timeout 3))
 #+end_src
 
 ** Which-Key
 #+begin_src emacs-lisp
-(use-package which-key
-  :ensure t
-  :init
-    (which-key-mode 1)
-  :config
-  (setq which-key-side-window-location 'bottom
-	  which-key-sort-order #'which-key-key-order-alpha
-	  which-key-sort-uppercase-first nil
-	  which-key-add-column-padding 1
-	  which-key-max-display-columns nil
-	  which-key-min-display-lines 6
-	  which-key-side-window-slot -10
-	  which-key-side-window-max-height 0.25
-	  which-key-idle-delay 0.8
-	  which-key-max-description-length 25
-	  which-key-allow-imprecise-window-fit t
-	  which-key-separator " → " ))
+  (use-package which-key
+    :ensure t
+    :init
+      (which-key-mode 1)
+      :config
+    (setq which-key-side-window-location 'bottom
+        which-key-sort-order #'which-key-key-order-alpha
+        which-key-sort-uppercase-first nil
+        which-key-add-column-padding 1
+        which-key-max-display-columns nil
+        which-key-min-display-lines 6
+        which-key-side-window-slot -10
+        which-key-side-window-max-height 0.25
+        which-key-idle-delay 0.8
+        which-key-max-description-length 25
+        which-key-allow-imprecise-window-fit t
+        which-key-separator " → " ))
 #+end_src
