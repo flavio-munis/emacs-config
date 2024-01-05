@@ -12,9 +12,10 @@
 - [[#packages][Packages]]
   - [[#all-the-icons][All The Icons]]
   - [[#buffer-move][Buffer Move]]
+  - [[#dashboard][Dashboard]]
   - [[#ivy-counsel][Ivy (Counsel)]]
   - [[#org-mode][Org Mode]]
-  - [[#rainbow-delimiters][Rainbow Delimiters]]
+  - [[#projectile][Projectile]]
   - [[#repeat-mode][Repeat Mode]]
   - [[#sudo-edit][Sudo Edit]]
   - [[#which-key][Which-Key]]
@@ -223,6 +224,30 @@ one, an error is signaled."
         (select-window other-win))))
 #+end_src
 
+** Dashboard
+#+begin_src emacs-lisp
+  (use-package dashboard
+    :ensure t 
+    :init
+    (setq initial-buffer-choice 'dashboard-open)
+    (setq dashboard-set-heading-icons t)
+    (setq dashboard-set-file-icons t)
+    (setq dashboard-icon-types 'all-the-icons)
+    (setq dashboard-banner-logo-title "Emacs Is More Than A Text Editor!")
+    (setq dashboard-startup-banner 'logo) ;; use standard emacs logo as banner
+    (setq dashboard-center-content nil) ;; set to 't' for centered content
+    (setq dashboard-items '((recents . 5)
+                            (agenda . 5 )
+                            (bookmarks . 3)
+                            (projects . 3)
+                            (registers . 3)))
+    :custom
+    (dashboard-modify-heading-icons '((recents . "file-text")
+                                      (bookmarks . "book")))
+    :config
+    (dashboard-setup-startup-hook))
+#+end_src
+
 ** Ivy (Counsel)
 #+begin_src emacs-lisp
   (use-package counsel
@@ -279,12 +304,11 @@ one, an error is signaled."
   (electric-indent-mode -1)
 #+end_src
 
-** Rainbow Delimiters
+** Projectile
 #+begin_src emacs-lisp
-  (use-package rainbow-delimiters
+  (use-package projectile
     :ensure t
-    :hook
-    (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+    :config (projectile-mode 1))
 #+end_src
 
 ** Repeat Mode
