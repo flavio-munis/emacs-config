@@ -14,6 +14,7 @@
   - [[#buffer-move][Buffer Move]]
   - [[#ivy-counsel][Ivy (Counsel)]]
   - [[#org-mode][Org Mode]]
+  - [[#rainbow-delimiters][Rainbow Delimiters]]
   - [[#repeat-mode][Repeat Mode]]
   - [[#sudo-edit][Sudo Edit]]
   - [[#which-key][Which-Key]]
@@ -278,7 +279,13 @@ one, an error is signaled."
   (electric-indent-mode -1)
 #+end_src
 
-**
+** Rainbow Delimiters
+#+begin_src emacs-lisp
+  (use-package rainbow-delimiters
+    :ensure t
+    :hook
+    (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+#+end_src
 
 ** Repeat Mode
 #+begin_src emacs-lisp
@@ -356,6 +363,8 @@ Org-tempo is not a separate package but a module within org that can be enabled.
 #+end_src
 
 ** Vterm and Vterm Toggle
+Install CMake, libtools and libvterm before if errors occurs.
+
 #+begin_src emacs-lisp
   (use-package vterm
     :ensure t
