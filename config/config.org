@@ -17,6 +17,9 @@
   - [[#repeat-mode][Repeat Mode]]
   - [[#sudo-edit][Sudo Edit]]
   - [[#which-key][Which-Key]]
+- [[#terminals][Terminals]]
+  - [[#eshell][Eshell]]
+  - [[#vterm-and-vterm-toggle][Vterm and Vterm Toggle]]
 
 * General Settings
 
@@ -89,9 +92,9 @@ Set custom font, and makes all comments be in italic.
     :ensure t
     :config
 
-    ;; Global Keybind for shell
+    ;; Open eshell
     (general-define-key
-     "<f9>" 'shell)
+     "<f9>" 'eshell)
 
     ;; Creates a prefix caller
     (general-create-definer my-leader-def
@@ -123,6 +126,13 @@ Set custom font, and makes all comments be in italic.
       "w r" '(buf-move-right :wk "window right")
       "w u" '(buf-move-up :wk "window up")
       "w d" '(buf-move-down :wk "window down"))
+
+    ;; Vterm
+    (my-leader-def
+      "v" '(:ignore t :wk "vterm")
+      "v v" '(vterm-toggle :wk "toggle vterm")
+      "v l" '(display-line-numbers-mode :wk "toggle line numbers")
+      "v t" '(visual-line-mode :wk "toggle truncated lines"))
 #+end_src
 
 * Packages
@@ -329,4 +339,43 @@ Org-tempo is not a separate package but a module within org that can be enabled.
           which-key-max-description-length 25
           which-key-allow-imprecise-window-fit t
           which-key-separator " → " ))
+#+end_src
+
+* Terminals
+
+** Eshell
+#+begin_src emacs-lisp
+  (use-package eshell-syntax-highlighting
+    :ensure t
+    :after esh-mode
+    :config (eshell-syntax-highlighting-global-mode 1))
+
+  (setq scrool-to-bottom-on-input t
+        eshell-history-size 5000
+        eshell-buffer-maximun-lines 5000)
+#+end_src
+
+** Vterm and Vterm Toggle
+#+begin_src emacs-lisp
+  (use-package vterm
+    :ensure t
+    :config
+    (setq shell-file-name "/bin/bash"
+          vterm-max-scrollback 5000))
+
+  (use-package vterm-toggle
+    :ensure t
+    :after vterm
+    :config
+    (setq vterm-toggle-fullscreen-p nil)
+    (setq vterm-toggle-scope 'project)
+    (add-to-list 'display-buffer-alist
+                 '((lambda (buffer-or-name _)
+                       (let ((buffer (get-buffer buffer-or-name)))
+                         (with-current-buffer buffer
+                           (or (equal major-mode 'vterm-mode)
+                               (string-prefix-p vterm-buffer-name (buffer-name buffer))))))
+                    (display-buffer-reuse-window display-buffer-at-bottom)
+                    (reusable-frames . visible)
+                    (window-height . 0.3))))
 #+end_src
