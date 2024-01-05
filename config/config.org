@@ -16,6 +16,8 @@
   - [[#all-the-icons][All The Icons]]
   - [[#buffer-move][Buffer Move]]
   - [[#dashboard][Dashboard]]
+  - [[#diminish][Diminish]]
+  - [[#flycheck][Flycheck]]
   - [[#ivy-counsel][Ivy (Counsel)]]
   - [[#org-mode][Org Mode]]
   - [[#projectile][Projectile]]
@@ -270,6 +272,21 @@ one, an error is signaled."
     (dashboard-setup-startup-hook))
 #+end_src
 
+** Diminish
+#+begin_src emacs-lisp
+  (use-package diminish
+    :ensure t)
+#+end_src
+
+** Flycheck
+#+begin_src emacs-lisp
+  (use-package flycheck
+    :ensure t
+    :defer t
+    :diminish
+    :init (global-flycheck-mode))
+#+end_src
+
 ** Ivy (Counsel)
 #+begin_src emacs-lisp
   (use-package counsel
@@ -330,6 +347,7 @@ one, an error is signaled."
 #+begin_src emacs-lisp
   (use-package projectile
     :ensure t
+    :diminish
     :config (projectile-mode 1))
 #+end_src
 
@@ -377,7 +395,8 @@ Org-tempo is not a separate package but a module within org that can be enabled.
 #+begin_src emacs-lisp
   (use-package which-key
     :ensure t
-    :init
+    :diminish
+    :init  
     (which-key-mode 1)
     :config
     (setq which-key-side-window-location 'bottom
