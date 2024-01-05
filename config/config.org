@@ -11,8 +11,8 @@
   - [[#keybindings][KeyBindings]]
 - [[#packages][Packages]]
   - [[#all-the-icons][All The Icons]]
-  - [[#org-mode][Org Mode]]
   - [[#ivy-counsel][Ivy (Counsel)]]
+  - [[#org-mode][Org Mode]]
   - [[#repeat-mode][Repeat Mode]]
   - [[#sudo-edit][Sudo Edit]]
   - [[#which-key][Which-Key]]
@@ -118,29 +118,13 @@ Set custom font, and makes all comments be in italic.
 #+begin_src emacs-lisp
   (use-package all-the-icons
     :ensure t
-    :if (display-graphic-p))
-#+end_src
+    :if (display-graphic-p)
+    :config (unless (member "all-the-icons" (font-family-list))
+    (all-the-icons-install-fonts t)))
 
-** Org Mode
-*** Enable Table of Contents
-#+begin_src emacs-lisp
-  (use-package toc-org
+  (use-package all-the-icons-dired
     :ensure t
-    :commands toc-org-enable
-    :init (add-hook 'org-mode-hook 'toc-org-enable))
-#+end_src
-
-*** Enable Org Bullets
-#+begin_src emacs-lisp
-  (add-hook 'org-mode-hook 'org-indent-mode)
-  (use-package org-bullets
-    :ensure t)
-  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
-#+end_src
-
-*** Disable Eletric Indent
-#+begin_src emacs-lisp
-  (electric-indent-mode -1)
+    :hook (dired-mode . (lambda () (all-the-icons-dired-mode t))))
 #+end_src
 
 ** Ivy (Counsel)
@@ -174,11 +158,32 @@ Set custom font, and makes all comments be in italic.
     :custom
       (ivy-virtual-abbreviate 'full
       ivy-rich-switch-buffer-align-virtual-buffer t
-      ivy-rich-path-style 'abbrev)
-    :config
-      (ivy-set-display-transformer 'ivy-switch-buffer
-        'ivy-rich-switch-buffer-transformer))
+      ivy-rich-path-style 'abbrev))
 #+end_src
+
+** Org Mode
+*** Enable Table of Contents
+#+begin_src emacs-lisp
+  (use-package toc-org
+    :ensure t
+    :commands toc-org-enable
+    :init (add-hook 'org-mode-hook 'toc-org-enable))
+#+end_src
+
+*** Enable Org Bullets
+#+begin_src emacs-lisp
+  (add-hook 'org-mode-hook 'org-indent-mode)
+  (use-package org-bullets
+    :ensure t)
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+#+end_src
+
+*** Disable Eletric Indent
+#+begin_src emacs-lisp
+  (electric-indent-mode -1)
+#+end_src
+
+**
 
 ** Repeat Mode
 #+begin_src emacs-lisp
@@ -240,4 +245,3 @@ Org-tempo is not a separate package but a module within org that can be enabled.
           which-key-allow-imprecise-window-fit t
           which-key-separator " → " ))
 #+end_src
-
