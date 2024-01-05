@@ -10,7 +10,9 @@
   - [[#font][Font]]
   - [[#keybindings][KeyBindings]]
 - [[#packages][Packages]]
+  - [[#all-the-icons][All The Icons]]
   - [[#org-mode][Org Mode]]
+  - [[#ivy-counsel][Ivy (Counsel)]]
   - [[#repeat-mode][Repeat Mode]]
   - [[#sudo-edit][Sudo Edit]]
   - [[#which-key][Which-Key]]
@@ -104,6 +106,13 @@ Set custom font, and makes all comments be in italic.
 
 * Packages
 
+** All The Icons
+#+begin_src emacs-lisp
+  (use-package all-the-icons
+    :ensure t
+    :if (display-graphic-p))
+#+end_src
+
 ** Org Mode
 *** Enable Table of Contents
 #+begin_src emacs-lisp
@@ -124,6 +133,43 @@ Set custom font, and makes all comments be in italic.
 *** Disable Eletric Indent
 #+begin_src emacs-lisp
   (electric-indent-mode -1)
+#+end_src
+
+** Ivy (Counsel)
+#+begin_src emacs-lisp
+  (use-package counsel
+    :ensure t
+    :after ivy
+    :config (counsel-mode))
+
+  (use-package ivy
+    :ensure t
+    :bind
+    ;; ivy-resume resumes the last Ivy-based completion.
+      (("C-c C-r" . ivy-resume)
+      ("C-x B" . ivy-switch-buffer-other-window))
+    :custom
+      (setq ivy-use-virtual-buffers t)
+      (setq ivy-count-format "(%d/%d) ")
+      (setq enable-recursive-minibuffers t)
+    :config
+      (ivy-mode))
+
+  (use-package all-the-icons-ivy-rich
+    :ensure t
+    :init (all-the-icons-ivy-rich-mode 1))
+
+  (use-package ivy-rich
+    :ensure t
+    :after ivy
+    :init (ivy-rich-mode 1) ;; this gets us descriptions in M-x.
+    :custom
+      (ivy-virtual-abbreviate 'full
+      ivy-rich-switch-buffer-align-virtual-buffer t
+      ivy-rich-path-style 'abbrev)
+    :config
+      (ivy-set-display-transformer 'ivy-switch-buffer
+        'ivy-rich-switch-buffer-transformer))
 #+end_src
 
 ** Repeat Mode
