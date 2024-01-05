@@ -2,6 +2,17 @@
 #+AUTHOR: FLÁVIO MUNIZ
 #+STARTUP: showeverything
 
+* Table of Contents :toc:
+- [[#general-settings][General Settings]]
+  - [[#graphical-interface][Graphical Interface]]
+  - [[#code][Code]]
+  - [[#theme][Theme]]
+  - [[#font][Font]]
+  - [[#useful-functions][Useful Functions]]
+- [[#packages][Packages]]
+  - [[#org-mode][Org Mode]]
+  - [[#which-key][Which-Key]]
+
 * General Settings
 
 ** Graphical Interface
@@ -77,6 +88,23 @@ Restarts Emacs.
 
 
 * Packages
+
+** Org Mode
+*** Enable Table of Contents
+#+begin_src emacs-lisp
+(use-package toc-org
+  :ensure t
+  :commands toc-org-enable
+  :init (add-hook 'org-mode-hook 'toc-org-enable))
+#+end_src
+
+*** Enable Org Bullets
+#+begin_src emacs-lisp
+(add-hook 'org-mode-hook 'org-indent-mode)
+(use-package org-bullets
+  :ensure t)
+(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+#+end_src
 
 ** Which-Key
 #+begin_src emacs-lisp
