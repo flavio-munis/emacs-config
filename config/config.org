@@ -94,12 +94,12 @@ Set custom font, and makes all comments be in italic.
                             :prefix "C-c")
 
     (my-leader-def
-     "." '(find-file :wk "Find File")
+     "f" '(find-file :wk "Find File")
      "c f" '((lambda () (interactive) (find-file "~/.config/emacs/config.org")) :wk "Edit emacs config")
      "TAB TAB" '(comment-line :wk "Comment Line(s)")
      "r" '(lambda () (interactive) (org-babel-load-file (expand-file-name "~/.emacs.d/config.org"))) :wk "Reload Emacs Config"))
-
 #+end_src
+
 * Packages
 
 ** Org Mode
