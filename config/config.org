@@ -12,6 +12,7 @@
 - [[#packages][Packages]]
   - [[#org-mode][Org Mode]]
   - [[#repeat-mode][Repeat Mode]]
+  - [[#sudo-edit][Sudo Edit]]
   - [[#which-key][Which-Key]]
 
 * General Settings
@@ -88,14 +89,15 @@ Set custom font, and makes all comments be in italic.
     ;; Global Keybind for shell
     (general-define-key
      "<f9>" 'shell)
-  
+
     ;; Creates a prefix caller
     (general-create-definer my-leader-def
-                            :prefix "C-c")
+      :prefix "C-c"
+      :keymaps 'override)
 
     (my-leader-def
-     "f" '(find-file :wk "find file")
-     "c f" '((lambda () (interactive) (find-file "~/.config/emacs/config.org")) :wk "edit emacs config")
+     "f f" '(find-file :wk "find file")
+     "f c" '((lambda () (interactive) (find-file "~/.config/emacs/config.org")) :wk "edit emacs config")
      "TAB TAB" '(comment-line :wk "comment Line(s)")
      "r" '(lambda () (interactive) (org-babel-load-file (expand-file-name "~/.emacs.d/config.org"))) :wk "reload emacs config"))
 #+end_src
@@ -154,25 +156,34 @@ Org-tempo is not a separate package but a module within org that can be enabled.
 (require 'org-tempo)
 #+end_src
 
+** Sudo Edit
+#+begin_src emacs-lisp
+  (use-package sudo-edit
+    :ensure t
+    :config
+      (my-leader-def
+        "f s" '(sudo-edit-find-file :wk "sudo find file")
+        "f e" '(sudo-edit :wk "sudo edit file")))
+#+end_src
 
 ** Which-Key
 #+begin_src emacs-lisp
   (use-package which-key
     :ensure t
     :init
-      (which-key-mode 1)
-      :config
+    (which-key-mode 1)
+    :config
     (setq which-key-side-window-location 'bottom
-        which-key-sort-order #'which-key-key-order-alpha
-        which-key-sort-uppercase-first nil
-        which-key-add-column-padding 1
-        which-key-max-display-columns nil
-        which-key-min-display-lines 6
-        which-key-side-window-slot -10
-        which-key-side-window-max-height 0.25
-        which-key-idle-delay 0.8
-        which-key-max-description-length 25
-        which-key-allow-imprecise-window-fit t
-        which-key-separator " → " ))
+          which-key-sort-order #'which-key-key-order-alpha
+          which-key-sort-uppercase-first nil
+          which-key-add-column-padding 1
+          which-key-max-display-columns nil
+          which-key-min-display-lines 6
+          which-key-side-window-slot -10
+          which-key-side-window-max-height 0.25
+          which-key-idle-delay 0.8
+          which-key-max-description-length 25
+          which-key-allow-imprecise-window-fit t
+          which-key-separator " → " ))
 #+end_src
 
