@@ -1,6 +1,7 @@
-;; Sets Package Manager as Melpa
+;; Sets Package Manager as Melpa and Elpa
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+(add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/"))
 
 (package-initialize)
 
