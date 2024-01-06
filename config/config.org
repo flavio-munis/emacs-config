@@ -22,6 +22,7 @@
   - [[#dashboard][Dashboard]]
   - [[#diminish][Diminish]]
   - [[#dired][Dired]]
+  - [[#emmet][Emmet]]
   - [[#flycheck][Flycheck]]
   - [[#ivy-counsel][Ivy (Counsel)]]
   - [[#neotree][Neotree]]
@@ -342,6 +343,15 @@ one, an error is signaled."
                                   ("png" . "xviewer")
                                   ("mkv" . "mpv")
                                   ("mp4" . "mpv"))))
+#+end_src
+
+** Emmet
+#+begin_src emacs-lisp
+  (use-package emmet-mode
+    :ensure t
+    :config
+    (add-hook 'sgml-mode-hook 'emmet-mode) ;; Auto-start on any markup modes
+    (add-hook 'css-mode-hook  'emmet-mode)) ;; enable Emmet's css abbreviation.
 #+end_src
 
 ** Flycheck
