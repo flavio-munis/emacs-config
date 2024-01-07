@@ -110,6 +110,10 @@ Set custom font, and makes all comments be in italic.
     (general-define-key
      "<f9>" 'eshell)
 
+    ;; Undo to ctrl-z
+    (general-define-key
+     "C-z" 'undo)
+
     ;; Creates a prefix caller
     (general-create-definer my-leader-def
       :prefix "C-c"
