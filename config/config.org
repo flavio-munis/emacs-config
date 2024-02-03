@@ -110,6 +110,9 @@ Set custom font, and makes all comments be in italic.
     (general-define-key
      "<f9>" 'eshell)
 
+    (general-define-key
+     "<f10>" 'vterm-toggle)
+
     ;; Undo to ctrl-z
     (general-define-key
      "C-z" 'undo)
@@ -137,7 +140,7 @@ Set custom font, and makes all comments be in italic.
       "TAB TAB" '(comment-line :wk "comment Line(s)")
       "r" '((lambda () (interactive) (org-babel-load-file (expand-file-name "~/.emacs.d/config.org"))) :wk "reload emacs config"))
 
-    ;; Help
+'    ;; Help
     (my-leader-def
       "h" '(:ignore t :wk "help")
       "h f" '(describe-function :wk "describe function")
