@@ -1,3 +1,4 @@
+
 #+TITLE: Emacs Personal Config
 #+AUTHOR: FLÁVIO MUNIZ
 #+STARTUP: showeverything
@@ -18,17 +19,20 @@
 - [[#packages][Packages]]
   - [[#all-the-icons][All The Icons]]
   - [[#buffer-move][Buffer Move]]
+  - [[#centaur-tabs][Centaur Tabs]]
   - [[#company][Company]]
   - [[#dashboard][Dashboard]]
   - [[#diminish][Diminish]]
   - [[#dired][Dired]]
   - [[#emmet][Emmet]]
   - [[#flycheck][Flycheck]]
+  - [[#highlight-indent-guides][Highlight Indent Guides]]
   - [[#ivy-counsel][Ivy (Counsel)]]
   - [[#neotree][Neotree]]
   - [[#org-mode][Org Mode]]
   - [[#projectile][Projectile]]
   - [[#repeat-mode][Repeat Mode]]
+  - [[#source-code-block-tag-expansion][Source Code Block Tag Expansion]]
   - [[#sudo-edit][Sudo Edit]]
   - [[#web-mode][Web Mode]]
   - [[#which-key][Which-Key]]
@@ -61,6 +65,7 @@
             'toggle-frame-maximized t)
 #+end_src
 
+
 ** Code
 
 *** Self-Closing Parenthesis
@@ -71,12 +76,19 @@
 *** Custom Tab Width
 #+begin_src emacs-lisp
   (setq-default tab-width 4)
+  (setq c-default-stayle "linux")
+  (setq c-basic-offset 4)
 #+end_src
 
 *** Disable Auto Save and Auto Backup
 #+begin_src emacs-lisp
   (setq make-bakcup-files nil)
   (setq auto-save-default nil)
+#+end_src
+
+*** Use y/n in Prompts
+#+begin_src emacs-lisp
+  (setq use-short-answers t)
 #+end_src
 
 ** Theme
@@ -115,12 +127,12 @@ Set custom font, and makes all comments be in italic.
 
     ;; Undo to ctrl-z
     (general-define-key
-     "C-z" 'undo)
+     "C-z" 'undo)  
 
     ;; Creates a prefix caller
     (general-create-definer my-leader-def
       :prefix "C-c"
-      :keymaps 'override)
+      :keymaps 'override))
 
     ;; Dired
     (my-leader-def
@@ -140,13 +152,13 @@ Set custom font, and makes all comments be in italic.
       "TAB TAB" '(comment-line :wk "comment Line(s)")
       "r" '((lambda () (interactive) (org-babel-load-file (expand-file-name "~/.emacs.d/config.org"))) :wk "reload emacs config"))
 
-'    ;; Help
+    ;; Help
     (my-leader-def
       "h" '(:ignore t :wk "help")
       "h f" '(describe-function :wk "describe function")
-      "h v" '(describe-variable :wk "describe variable")))
+      "h v" '(describe-variable :wk "describe variable"))
 
-    ;; Window/buffer
+  ;; Window/buffer
     (my-leader-def
       "w" '(:ignore t :wk "windows")
       "w l" '(buf-move-left :wk "window left")
@@ -290,6 +302,23 @@ one, an error is signaled."
         (select-window other-win))))
 #+end_src
 
+** Centaur Tabs
+#+begin_src emacs-lisp
+  (use-package centaur-tabs
+    :ensure t
+    :demand
+    :init
+    (setq centaur-tabs-style "bar")
+    (setq centaur-tabs-set-icons t)
+    :config
+    (centaur-tabs-mode t)
+    :bind
+    ("C-<" . centaur-tabs-backward)
+    ("C->" . centaur-tabs-forward))
+
+#+end_src
+
+
 ** Company
 #+begin_src emacs-lisp
   (use-package company
@@ -368,6 +397,19 @@ one, an error is signaled."
     :defer t
     :diminish
     :init (global-flycheck-mode))
+#+end_src
+
+** Highlight Indent Guides
+#+begin_src emacs-lisp
+  (use-package highlight-indent-guides
+    :ensure t
+    :defer t
+    :hook (prog-mode . highlight-indent-guides-mode)
+    :config
+    (setq highlight-indent-guides-method 'character)
+    (setq highlight-indent-guides-character ?\|)
+    (setq highlight-indent-guides-responsive 'top))
+  (set-face-background 'highlight-indent-guides-odd-face "darkgray")
 #+end_src
 
 ** Ivy (Counsel)
@@ -465,10 +507,10 @@ one, an error is signaled."
     :hook (after-init . repeat-mode)
     :custom
     (repeat-too-dangerous '(kill-this-buffer))
-    (repeat-exit-timeout 3))
+    (repeat-exit-timeout 5))
 #+end_src
 
-*** Source Code Block Tag Expansion
+** Source Code Block Tag Expansion
 Org-tempo is not a separate package but a module within org that can be enabled.  Org-tempo allows for '<s' followed by TAB to expand to a begin_src tag.  Other expansions available include:
 
 | Typing the below + TAB | Expands to ...                          |
@@ -509,7 +551,19 @@ Org-tempo is not a separate package but a module within org that can be enabled.
     (add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
     (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
     (add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
-    (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode)))
+    (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
+    (setq
+     web-mode-markup-indent-offset 2
+     web-mode-css-indent-offset 2
+     web-mode-code-indent-offset 2
+     web-mode-style-padding 2
+     web-mode-script-padding 2
+     web-mode-enable-auto-closing t
+     web-mode-enable-auto-opening t
+     web-mode-enable-auto-pairing t
+     web-mode-enable-auto-indentation t)
+    :mode
+    (".html$" "*.php$" "*.tsx"))
 #+end_src
 
 ** Which-Key
