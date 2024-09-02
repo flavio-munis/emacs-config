@@ -14,7 +14,9 @@
   - [[#magit][Magit]]
   - [[#git-time-machine][Git Time Machine]]
 - [[#languages][Languages]]
+  - [[#lsp-mode][Lsp Mode]]
   - [[#markdown][Markdown]]
+  - [[#python-mode][Python Mode]]
   - [[#sml][Sml]]
 - [[#packages][Packages]]
   - [[#all-the-icons][All The Icons]]
@@ -199,6 +201,22 @@ Set custom font, and makes all comments be in italic.
 * Languages
 Adds support to various programming languages.
 
+** Lsp Mode
+#+begin_src emacs-lisp
+  (use-package lsp-mode
+    :ensure t
+    :init
+    (setq lsp-auto-guess-root nil)
+    :hook
+    (lsp-mode . lsp-enable-which-key-integration)
+    :commands lsp)
+
+  (use-package lsp-ui
+    :ensure t
+    :hook (lsp-mode . lsp-ui-mode)
+    :commands lsp-ui-mode)
+#+end_src
+
 ** Markdown
 #+begin_src emacs-lisp
   (use-package markdown-mode
@@ -207,6 +225,18 @@ Adds support to various programming languages.
     :init (setq markdown-command "multimarkdown")
     :bind (:map markdown-mode-map
                 ("C-c C-e" . markdown-do)))
+#+end_src
+
+** Python Mode
+#+begin_src emacs-lisp
+  (use-package python-mode
+    :ensure t
+    :hook (python-mode . lsp-deferred)
+    :custom
+    (python-shell-interpreter "/usr/bin/ipython3"))
+
+  (use-package lsp-jedi
+    :ensure t)
 #+end_src
 
 ** Sml
@@ -310,14 +340,28 @@ one, an error is signaled."
     :init
     (setq centaur-tabs-style "bar")
     (setq centaur-tabs-set-icons t)
+    (setq centaur-tabs-set-bar 'under)
+    (setq x-underline-at-descent-line t)
     :config
+    ;;(centaur-tabs-group-by-projectile-project)
     (centaur-tabs-mode t)
+    (defun my-centaur-tabs-buffer-groups ()
+      "Group buffers into custom categories."
+      (list
+       (cond
+        ;; Group *vterm*, *eshell*, and *Python* buffers under "Terminals"
+        ((or (string-prefix-p "*vterm*" (buffer-name))
+             (string-prefix-p "*eshell*" (buffer-name))
+             (string-prefix-p "*Python*" (buffer-name)))
+         "Terminals")
+        (t
+         (centaur-tabs-get-group-name (current-buffer))))))
+    (setq centaur-tabs-buffer-groups-function 'my-centaur-tabs-buffer-groups)
     :bind
     ("C-<" . centaur-tabs-backward)
     ("C->" . centaur-tabs-forward))
 
 #+end_src
-
 
 ** Company
 #+begin_src emacs-lisp
@@ -503,11 +547,13 @@ one, an error is signaled."
 ** Repeat Mode
 #+begin_src emacs-lisp
   (use-package repeat
-    :ensure t
-    :hook (after-init . repeat-mode)
-    :custom
-    (repeat-too-dangerous '(kill-this-buffer))
-    (repeat-exit-timeout 5))
+	:ensure t
+	:hook (after-init . repeat-mode)
+	:config
+	(repeat-mode 1)
+	:custom
+	(repeat-too-dangerous '(kill-this-buffer))
+	(repeat-exit-timeout 5))
 #+end_src
 
 ** Source Code Block Tag Expansion

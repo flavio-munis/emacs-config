@@ -1,6 +1,6 @@
 ;; Sets Package Manager as Melpa and Elpa
 (require 'package)
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/"))
 
 (package-initialize)
@@ -16,6 +16,14 @@
 
 (eval-when-compile
   (require 'use-package))
+
+(use-package highlight-indent-guides
+  :ensure t
+  :init
+  (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
+  :config
+  (setq highlight-indent-guides-method 'character)
+  (setq highlight-indent-guides-auto-enabled t))
 
 ;; Sets config.org as the configuration file for emacs
 (org-babel-load-file
