@@ -228,6 +228,8 @@ Adds support to various programming languages.
 #+end_src
 
 ** Python Mode
+Need To install python-lsp-server and jedi-language-server packages.
+
 #+begin_src emacs-lisp
   (use-package python-mode
     :ensure t
@@ -343,7 +345,6 @@ one, an error is signaled."
     (setq centaur-tabs-set-bar 'under)
     (setq x-underline-at-descent-line t)
     :config
-    ;;(centaur-tabs-group-by-projectile-project)
     (centaur-tabs-mode t)
     (defun my-centaur-tabs-buffer-groups ()
       "Group buffers into custom categories."
@@ -357,6 +358,7 @@ one, an error is signaled."
         (t
          (centaur-tabs-get-group-name (current-buffer))))))
     (setq centaur-tabs-buffer-groups-function 'my-centaur-tabs-buffer-groups)
+    (centaur-tabs-group-by-projectile-project)
     :bind
     ("C-<" . centaur-tabs-backward)
     ("C->" . centaur-tabs-forward))
