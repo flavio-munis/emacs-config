@@ -1,4 +1,5 @@
 
+
 #+TITLE: Emacs Personal Config
 #+AUTHOR: FLÁVIO MUNIZ
 #+STARTUP: showeverything
@@ -15,6 +16,7 @@
   - [[#git-time-machine][Git Time Machine]]
 - [[#languages][Languages]]
   - [[#lsp-mode][Lsp Mode]]
+  - [[#ccls][Ccls]]
   - [[#markdown][Markdown]]
   - [[#python-mode][Python Mode]]
   - [[#sml][Sml]]
@@ -215,6 +217,14 @@ Adds support to various programming languages.
     :ensure t
     :hook (lsp-mode . lsp-ui-mode)
     :commands lsp-ui-mode)
+#+end_src
+
+** Ccls
+#+begin_src emacs-lisp
+  (use-package ccls
+    :ensure t
+    :hook ((c-mode c++-mode objc-mode cuda-mode) .
+           (lambda () (require 'ccls) (lsp))))
 #+end_src
 
 ** Markdown
