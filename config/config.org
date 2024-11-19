@@ -220,6 +220,7 @@ Adds support to various programming languages.
 #+end_src
 
 ** Ccls
+Use bear to generate compile_commands.json file.
 #+begin_src emacs-lisp
   (use-package ccls
     :ensure t
