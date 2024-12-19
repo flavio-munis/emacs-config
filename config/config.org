@@ -17,6 +17,7 @@
 - [[#languages][Languages]]
   - [[#lsp-mode][Lsp Mode]]
   - [[#ccls][Ccls]]
+  - [[#lua][Lua]]
   - [[#markdown][Markdown]]
   - [[#python-mode][Python Mode]]
   - [[#sml][Sml]]
@@ -226,6 +227,13 @@ Use bear to generate compile_commands.json file.
     :ensure t
     :hook ((c-mode c++-mode objc-mode cuda-mode) .
            (lambda () (require 'ccls) (lsp))))
+#+end_src
+
+** Lua
+#+begin_src emacs-lisp
+  (use-package lua-mode
+    :ensure t
+    :defer 1)
 #+end_src
 
 ** Markdown
