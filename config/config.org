@@ -10,7 +10,7 @@
   - [[#code][Code]]
   - [[#theme][Theme]]
   - [[#font][Font]]
-  - [[#keybindings][KeyBindings]]
+  - [[#key-bindings][Key Bindings]]
 - [[#git][Git]]
   - [[#magit][Magit]]
   - [[#git-time-machine][Git Time Machine]]
@@ -117,16 +117,31 @@ Set custom font, and makes all comments be in italic.
     :slant 'italic)
 #+end_src
 
-** KeyBindings
+** Key Bindings
 #+begin_src emacs-lisp
   (use-package general
     :ensure t
     :config
 
+    ;; Move to Start of Line Respect Identation
+    (defun smart-line-beginning ()
+  	"Move point to the beginning of text on the current line; if that is already
+  the current position of point, then move it to the beginning of the line."
+  	(interactive)
+  	(let ((pt (point)))
+  	  (beginning-of-line-text)
+  	  (when (eq pt (point))
+  		(beginning-of-line))))
+
+    ;; Set C a to Smart Line Beginning Fucntion
+    (general-define-key
+     "C-a" 'smart-line-beginning)
+
     ;; Open eshell
     (general-define-key
      "<f9>" 'eshell)
 
+    ;; Open vterm
     (general-define-key
      "<f10>" 'vterm-toggle)
 
@@ -186,6 +201,7 @@ Set custom font, and makes all comments be in italic.
       "t v" '(vterm-toggle :wk "vterm")
       "t g" '(git-timemachine-toggle :wk "git-timemachine"))
 #+end_src
+
 
 * Git
 
