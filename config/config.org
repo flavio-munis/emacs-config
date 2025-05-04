@@ -1,11 +1,10 @@
-
-
 #+TITLE: Emacs Personal Config
 #+AUTHOR: FLÁVIO MUNIZ
 #+STARTUP: showeverything
 
 * Table of Contents :toc:
 - [[#general-settings][General Settings]]
+  - [[#lexical-binding][Lexical Binding]]
   - [[#graphical-interface][Graphical Interface]]
   - [[#code][Code]]
   - [[#theme][Theme]]
@@ -15,11 +14,13 @@
   - [[#magit][Magit]]
   - [[#git-time-machine][Git Time Machine]]
 - [[#languages][Languages]]
+  - [[#eglot][Eglot]]
   - [[#lsp-mode][Lsp Mode]]
   - [[#ccls][Ccls]]
   - [[#lua][Lua]]
   - [[#markdown][Markdown]]
   - [[#python-mode][Python Mode]]
+  - [[#ocaml][OCaml]]
   - [[#sml][Sml]]
 - [[#packages][Packages]]
   - [[#all-the-icons][All The Icons]]
@@ -46,6 +47,11 @@
   - [[#vterm-and-vterm-toggle][Vterm and Vterm Toggle]]
 
 * General Settings
+
+** Lexical Binding
+#+begin_src emacs-lisp
+  (setq lexical-binding nil)
+#+end_src
 
 ** Graphical Interface
 
@@ -220,6 +226,17 @@ Set custom font, and makes all comments be in italic.
 * Languages
 Adds support to various programming languages.
 
+** Eglot
+#+begin_src emacs-lisp
+  (use-package eglot
+    :ensure t
+    :after tuareg
+    :hook ((tuareg-mode . eglot-ensure))
+    :config
+    (add-to-list 'eglot-server-programs
+               '(tuareg-mode . ("ocamllsp"))))
+#+end_src
+
 ** Lsp Mode
 #+begin_src emacs-lisp
   (use-package lsp-mode
@@ -262,6 +279,7 @@ Use bear to generate compile_commands.json file.
                 ("C-c C-e" . markdown-do)))
 #+end_src
 
+
 ** Python Mode
 Need To install python-lsp-server and jedi-language-server packages.
 
@@ -274,6 +292,23 @@ Need To install python-lsp-server and jedi-language-server packages.
 
   (use-package lsp-jedi
     :ensure t)
+#+end_src
+
+** OCaml
+#+begin_src emacs-lisp
+  (use-package caml
+    :ensure t)
+
+  (use-package tuareg
+    :ensure t
+    :mode (("\\.ocamlinit\\'" . tuareg-mode)))
+
+  (use-package ocaml-eglot
+    :ensure t
+    :after tuareg
+    :hook
+    (tuareg-mode . ocaml-eglot)
+    (ocaml-eglot . eglot-ensure))
 #+end_src
 
 ** Sml
