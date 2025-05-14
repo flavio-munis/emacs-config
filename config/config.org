@@ -633,6 +633,10 @@ one, an error is signaled."
   (add-hook 'racket-mode-hook 'enable-paredit-mode)
   (add-hook 'racket-repl-mode-hook 'enable-paredit-mode)
   (add-hook 'emacs-lisp-mode-hook 'enable-paredit-mode)
+
+  ;; Remove Key Bindings that interfers with iteractives modes
+  (dolist (k '("RET" "C-m" "C-j"))
+    (define-key paredit-mode-map (kbd k) nil))
 #+end_src
 
 ** Projectile
