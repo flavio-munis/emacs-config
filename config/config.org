@@ -16,7 +16,6 @@
 - [[#languages][Languages]]
   - [[#eglot][Eglot]]
   - [[#lsp-mode][Lsp Mode]]
-  - [[#ccls][Ccls]]
   - [[#lua][Lua]]
   - [[#markdown][Markdown]]
   - [[#python-mode][Python Mode]]
@@ -241,12 +240,20 @@ Adds support to various programming languages.
 ** Eglot
 #+begin_src emacs-lisp
   (use-package eglot
-    :ensure t
-    :after tuareg
-    :hook ((tuareg-mode . eglot-ensure))
-    :config
-    (add-to-list 'eglot-server-programs
-               '(tuareg-mode . ("ocamllsp"))))
+    :ensure t)
+
+  ;; Clangd
+  ;;; Use Bear to generate compile_commands.json
+  (add-to-list 'eglot-server-programs 
+    			 '((c++-mode c-mode) "clangd"))
+  (add-hook 'c-mode-hook 'eglot-ensure)
+  (add-hook 'c++-mode-hook 'eglot-ensure)
+
+  ;; Tuareg
+  (add-to-list 'eglot-server-programs
+                 '(tuareg-mode . ("ocamllsp")))
+  (add-hook 'tuareg-mode 'eglot-ensure)
+
 #+end_src
 
 ** Lsp Mode
@@ -263,15 +270,6 @@ Adds support to various programming languages.
     :ensure t
     :hook (lsp-mode . lsp-ui-mode)
     :commands lsp-ui-mode)
-#+end_src
-
-** Ccls
-Use bear to generate compile_commands.json file.
-#+begin_src emacs-lisp
-  (use-package ccls
-    :ensure t
-    :hook ((c-mode c++-mode objc-mode cuda-mode) .
-           (lambda () (require 'ccls) (lsp))))
 #+end_src
 
 ** Lua
