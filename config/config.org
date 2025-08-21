@@ -9,7 +9,12 @@
   - [[#code][Code]]
   - [[#theme][Theme]]
   - [[#font][Font]]
-  - [[#key-bindings][Key Bindings]]
+- [[#key-bindings][Key Bindings]]
+  - [[#general][General]]
+  - [[#kill-to-beginning-of-line][Kill to Beginning of Line]]
+  - [[#shells][Shells]]
+  - [[#smart-line-beginning][Smart Line Beginning]]
+  - [[#undo][Undo]]
 - [[#git][Git]]
   - [[#magit][Magit]]
   - [[#git-time-machine][Git Time Machine]]
@@ -23,6 +28,7 @@
   - [[#racket][Racket]]
   - [[#sml][Sml]]
 - [[#packages][Packages]]
+  - [[#ace-window][Ace Window]]
   - [[#all-the-icons][All The Icons]]
   - [[#buffer-move][Buffer Move]]
   - [[#centaur-tabs][Centaur Tabs]]
@@ -78,7 +84,6 @@
             'toggle-frame-maximized t)
 #+end_src
 
-
 ** Code
 
 *** Self-Closing Parenthesis
@@ -125,47 +130,15 @@ Set custom font, and makes all comments be in italic.
     :slant 'italic)
 #+end_src
 
-** Key Bindings
+
+* Key Bindings
+Definitions of Almost all Key Bindings Used in this Config.
+
+** General
 #+begin_src emacs-lisp
   (use-package general
     :ensure t
     :config
-
-    ;; Move to Start of Line Respect Identation
-    (defun smart-line-beginning ()
-  	"Move point to the beginning of text on the current line; if that is already
-  the current position of point, then move it to the beginning of the line."
-  	(interactive)
-  	(let ((pt (point)))
-  	  (beginning-of-line-text)
-  	  (when (eq pt (point))
-  		(beginning-of-line))))
-
-    ;; Set C a to Smart Line Beginning Fucntion
-    (general-define-key
-     "C-a" 'smart-line-beginning)
-
-    ;; Kill from point to beginning of line
-    (defun phg/kill-to-bol ()
-  	"Kill from point to beginning of line."
-  	(interactive)
-  	(kill-line 0))
-
-    (general-define-key
-     "C-<backspace>" 'phg/kill-to-bol)
-
-    ;; Open eshell
-    (general-define-key
-     "<f9>" 'eshell)
-
-    ;; Open vterm
-    (general-define-key
-     "<f10>" 'vterm-toggle)
-
-    ;; Undo to ctrl-z
-    (general-define-key
-     "C-z" 'undo)  
-
     ;; Creates a prefix caller
     (general-create-definer my-leader-def
       :prefix "C-c"
@@ -217,6 +190,54 @@ Set custom font, and makes all comments be in italic.
       "t t" '(visual-line-mode :wk "truncated lines")
       "t v" '(vterm-toggle :wk "vterm")
       "t g" '(git-timemachine-toggle :wk "git-timemachine"))
+#+end_src
+
+** Kill to Beginning of Line
+Kill from point to beginning of line.
+#+begin_src emacs-lisp
+  (defun phg/kill-to-bol ()
+    "Kill from point to beginning of line."
+    (interactive)
+    (kill-line 0))
+
+  (global-set-key
+   (kbd "C-<backspace>") 'phg/kill-to-bol)
+#+end_src
+
+** Shells
+Bind F9 to Eshell and F10 to Vterm.
+#+begin_src emacs-lisp
+  ;; Open eshell
+  (global-set-key
+   (kbd "<f9>") 'eshell)
+
+  ;; Open vterm
+  (global-set-key
+   (kbd "<f10>") 'vterm-toggle)
+#+end_src
+
+** Smart Line Beginning 
+Move to Start of Line Respecting Identation.
+#+begin_src emacs-lisp
+  (defun smart-line-beginning ()
+    "Move point to the beginning of text on the current line; if that is already
+  the current position of point, then move it to the beginning of the line."
+    (interactive)
+    (let ((pt (point)))
+  	(beginning-of-line-text)
+    	(when (eq pt (point))
+    	  (beginning-of-line))))
+
+  ;; Set C a to Smart Line Beginning Fucntion
+  (global-set-key
+   (kbd "C-a") 'smart-line-beginning)
+#+end_src
+
+** Undo
+Bind undo to Ctrl-z
+#+begin_src emacs-lisp
+  (global-set-key
+   (kbd "C-z") 'undo)  
 #+end_src
 
 
@@ -334,6 +355,45 @@ Need To install python-lsp-server and jedi-language-server packages.
 
 * Packages
 
+** Ace Window
+You can swap windows by calling ace-window with a prefix argument C-u.
+
+You can delete the selected window by calling ace-window with a double prefix argument, i.e. C-u C-u.
+#+begin_src emacs-lisp
+  (use-package ace-window
+    :ensure t)
+
+  ;; Binds "Meta - o" To ace-window main function
+  (global-set-key (kbd "M-o") 'ace-window)
+
+  ;; Windows Have Visual Indication of it's Code
+  (ace-window-display-mode 1)
+
+  ;; Set Group of Keys For Windows
+  (setq aw-keys '(?q ?w ?e ?r ?t ?y ?u ?i ?o ?p))
+
+  (defun ace-window-prefix ()
+    "Use `ace-window' to display the buffer of the next command.
+  The next buffer is the buffer displayed by the next command invoked
+  immediately after this command (ignoring reading from the minibuffer).
+  Creates a new window before displaying the buffer.
+  When `switch-to-buffer-obey-display-actions' is non-nil,
+  `switch-to-buffer' commands are also supported."
+    (interactive)
+    (display-buffer-override-next-command
+     (lambda (buffer _)
+       (let (window type)
+         (setq
+          window (aw-select (propertize " ACE" 'face 'mode-line-highlight))
+          type 'reuse)
+         (cons window type)))
+     nil "[ace-window]")
+    (message "Use `ace-window' to display next command buffer..."))
+
+  (keymap-global-set "C-x 4 o" 'ace-window-prefix)
+
+#+end_src
+
 ** All The Icons
 #+begin_src emacs-lisp
   (use-package all-the-icons
@@ -445,8 +505,8 @@ one, an error is signaled."
     (setq centaur-tabs-buffer-groups-function 'my-centaur-tabs-buffer-groups)
     (centaur-tabs-group-by-projectile-project)
     :bind
-    ("C-<" . centaur-tabs-backward)
-    ("C->" . centaur-tabs-forward))
+    (("C-<" . centaur-tabs-backward)
+     ("C->" . centaur-tabs-forward)))
 
 #+end_src
 
