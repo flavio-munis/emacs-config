@@ -24,6 +24,7 @@
   - [[#lua][Lua]]
   - [[#markdown][Markdown]]
   - [[#python-mode][Python Mode]]
+  - [[#pyvenv][pyvenv]]
   - [[#ocaml][OCaml]]
   - [[#racket][Racket]]
   - [[#sml][Sml]]
@@ -316,12 +317,29 @@ Need To install python-lsp-server and jedi-language-server packages.
 #+begin_src emacs-lisp
   (use-package python-mode
     :ensure t
-    :hook (python-mode . lsp-deferred)
-    :custom
-    (python-shell-interpreter "/usr/bin/ipython3"))
+    :hook (python-mode . lsp-deferred))
 
   (use-package lsp-jedi
     :ensure t)
+#+end_src
+
+** pyvenv
+Python virtual environments for emacs. Use M-x pyvenv-workon to change python version to local and restart lsp with M-x lsp-workspace-restart. 
+#+begin_src emacs-lisp
+  (use-package pyvenv
+    :ensure t
+    :init
+    (setenv "WORKON_HOME" "~/.pyenv/versions")
+    :config
+    ;; Set correct Python interpreter
+    (setq pyvenv-post-activate-hooks
+  		(list 
+  		 (lambda () 
+  		   (setq python-shell-interpreter (concat pyvenv-virtual-env "bin/python3")))))
+    (setq pyvenv-post-deactivate-hooks
+  		(list 
+  		 (lambda ()
+  		   (setq python-shell-interpreter "python3")))))
 #+end_src
 
 ** OCaml
