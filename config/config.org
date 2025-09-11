@@ -38,6 +38,7 @@
   - [[#diminish][Diminish]]
   - [[#dired][Dired]]
   - [[#emmet][Emmet]]
+  - [[#exec-path-from-shell][Exec Path From Shell]]
   - [[#flycheck][Flycheck]]
   - [[#highlight-indent-guides][Highlight Indent Guides]]
   - [[#ivy-counsel][Ivy (Counsel)]]
@@ -286,7 +287,9 @@ Adds support to various programming languages.
     (setq lsp-auto-guess-root nil)
     :hook
     (lsp-mode . lsp-enable-which-key-integration)
-    :commands lsp)
+    :commands lsp
+    :config
+    (add-hook 'web-mode-hook 'lsp))
 
   (use-package lsp-ui
     :ensure t
@@ -329,17 +332,17 @@ Python virtual environments for emacs. Use M-x pyvenv-workon to change python ve
   (use-package pyvenv
     :ensure t
     :init
-    (setenv "WORKON_HOME" "~/.pyenv/versions")
-    :config
+    (setenv "WORKON_HOME" "~/.pyenv/versions"))
+    ;;:config
     ;; Set correct Python interpreter
-    (setq pyvenv-post-activate-hooks
-  		(list 
-  		 (lambda () 
-  		   (setq python-shell-interpreter (concat pyvenv-virtual-env "bin/python3")))))
-    (setq pyvenv-post-deactivate-hooks
-  		(list 
-  		 (lambda ()
-  		   (setq python-shell-interpreter "python3")))))
+    ;;(setq pyvenv-post-activate-hooks
+  		;;(list 
+  		 ;;(lambda () 
+  		   ;;(setq python-shell-interpreter (concat pyvenv-virtual-env "bin/python3")))))
+    ;;(setq pyvenv-post-deactivate-hooks
+  		;;(list 
+  		 ;;(lambda ()
+  		   ;;(setq python-shell-interpreter "python3")))))
 #+end_src
 
 ** OCaml
@@ -599,13 +602,20 @@ one, an error is signaled."
     (add-hook 'css-mode-hook  'emmet-mode)) ;; enable Emmet's css abbreviation.
 #+end_src
 
+** Exec Path From Shell
+#+begin_src emacs-lisp
+  (use-package exec-path-from-shell
+    :ensure t
+    :config 
+    (exec-path-from-shell-initialize))
+#+end_src
+
 ** Flycheck
 #+begin_src emacs-lisp
   (use-package flycheck
     :ensure t
-    :defer t
-    :diminish
-    :init (global-flycheck-mode))
+    :config
+    (add-hook 'after-init-hook #'global-flycheck-mode))
 #+end_src
 
 ** Highlight Indent Guides
