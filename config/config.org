@@ -1,3 +1,4 @@
+
 #+TITLE: Emacs Personal Config
 #+AUTHOR: FLÁVIO MUNIZ
 #+STARTUP: showeverything
@@ -42,6 +43,7 @@
   - [[#flycheck][Flycheck]]
   - [[#highlight-indent-guides][Highlight Indent Guides]]
   - [[#ivy-counsel][Ivy (Counsel)]]
+  - [[#move-text][move-text]]
   - [[#neotree][Neotree]]
   - [[#org-mode][Org Mode]]
   - [[#paredit][Paredit]]
@@ -267,15 +269,15 @@ Adds support to various programming languages.
 
   ;; Clangd
   ;;; Use Bear to generate compile_commands.json
-  (add-to-list 'eglot-server-programs 
-    			 '((c++-mode c-mode) "clangd"))
-  (add-hook 'c-mode-hook 'eglot-ensure)
-  (add-hook 'c++-mode-hook 'eglot-ensure)
+  ;; (add-to-list 'eglot-server-programs 
+  ;;   			 '((c++-mode c-mode) "clangd"))
+  ;; (add-hook 'c-mode-hook 'eglot-ensure)
+  ;; (add-hook 'c++-mode-hook 'eglot-ensure)
 
-  ;; Tuareg
-  (add-to-list 'eglot-server-programs
-                 '(tuareg-mode . ("ocamllsp")))
-  (add-hook 'tuareg-mode 'eglot-ensure)
+  ;; ;; Tuareg
+  ;; (add-to-list 'eglot-server-programs
+  ;;                '(tuareg-mode . ("ocamllsp")))
+  ;; (add-hook 'tuareg-mode 'eglot-ensure)
 
 #+end_src
 
@@ -289,7 +291,9 @@ Adds support to various programming languages.
     (lsp-mode . lsp-enable-which-key-integration)
     :commands lsp
     :config
-    (add-hook 'web-mode-hook 'lsp))
+    (add-hook 'web-mode-hook 'lsp)
+    (add-hook 'c-mode-hook 'lsp)
+    (add-hook 'c++-mode-hook 'lsp))
 
   (use-package lsp-ui
     :ensure t
@@ -665,6 +669,23 @@ one, an error is signaled."
       (ivy-virtual-abbreviate 'full
       ivy-rich-switch-buffer-align-virtual-buffer t
       ivy-rich-path-style 'abbrev))
+#+end_src
+
+** move-text
+#+begin_src emacs-lisp
+  (use-package move-text
+    :ensure t
+    :config (move-text-default-bindings))
+
+  (defun indent-region-advice (&rest ignored)
+    (let ((deactivate deactivate-mark))
+      (if (region-active-p)
+          (indent-region (region-beginning) (region-end))
+        (indent-region (line-beginning-position) (line-end-position)))
+      (setq deactivate-mark deactivate)))
+
+  (advice-add 'move-text-up :after 'indent-region-advice)
+  (advice-add 'move-text-down :after 'indent-region-advice)
 #+end_src
 
 ** Neotree
