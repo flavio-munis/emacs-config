@@ -114,12 +114,13 @@
 #+end_src
 
 ** Theme
-Install and load zenburn theme.
+Install and load catppuccin theme.
 #+begin_src emacs-lisp
-  (use-package zenburn-theme
+  (use-package catppuccin-theme
     :ensure t
     :config
-    (load-theme 'zenburn t))
+    (load-theme 'catppuccin t)
+    (setq catppuccin-flavor 'mocha))
 #+end_src
 
 ** Font
