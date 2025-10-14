@@ -5,7 +5,6 @@
 
 * Table of Contents :toc:
 - [[#general-settings][General Settings]]
-  - [[#lexical-binding][Lexical Binding]]
   - [[#graphical-interface][Graphical Interface]]
   - [[#code][Code]]
   - [[#theme][Theme]]
@@ -59,11 +58,6 @@
   - [[#vterm-and-vterm-toggle][Vterm and Vterm Toggle]]
 
 * General Settings
-
-** Lexical Binding
-#+begin_src emacs-lisp
-  (setq lexical-binding nil)
-#+end_src
 
 ** Graphical Interface
 
@@ -127,9 +121,9 @@ Install and load catppuccin theme.
 Set custom font, and makes all comments be in italic.
 #+begin_src emacs-lisp
   (add-to-list 'default-frame-alist
-             '(font . "Ubuntu Mono-14"))
+             '(font . "UbuntuMono Nerd Font-14"))
   (set-face-attribute 'default t
-                      :font "Ubuntu Mono-14")
+                      :font "UbuntuMono Nerd Font-14")
 
   (set-face-attribute 'font-lock-comment-face nil
     :slant 'italic)
