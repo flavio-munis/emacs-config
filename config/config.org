@@ -155,52 +155,56 @@ Definitions of Almost all Key Bindings Used in this Config.
       :prefix "C-c"
       :keymaps 'override))
 
-    ;; Dired
-    (my-leader-def
-      "d" '(:ignore t :wk "dired")
-      "d j" '(dired-jump :wk "opens dired in current directory")
-      "d n" '(neotree-dir :wk "open current directory in neotree"))
+  ;; Dired
+  (my-leader-def
+    "d" '(:ignore t :wk "dired")
+    "d j" '(dired-jump :wk "opens dired in current directory")
+    "d n" '(neotree-dir :wk "open current directory in neotree"))
 
-    ;; File find/edit
-    (my-leader-def
-      "f" '(:ignore t :wk "find/edit") 
-      "f f" '(find-file :wk "find file")
-      "f c" '((lambda () (interactive) (find-file "~/.config/emacs/config.org")) :wk "edit emacs config")
-      "f r" '(counsel-recentf :wk "find recent files"))
+  ;; File find/edit
+  (my-leader-def
+    "f" '(:ignore t :wk "find/edit") 
+    "f f" '(find-file :wk "find file")
+    "f c" '((lambda () (interactive) (find-file "~/.config/emacs/config.org")) :wk "edit emacs config")
+    "f r" '(counsel-recentf :wk "find recent files"))
 
-    ;; Others
-    (my-leader-def
-      "TAB TAB" '(comment-line :wk "comment Line(s)")
-      "r" '((lambda () (interactive) (org-babel-load-file (expand-file-name "~/.emacs.d/config.org"))) :wk "reload emacs config"))
+  ;; Others
+  (my-leader-def
+    "TAB TAB" '(comment-line :wk "comment Line(s)")
+    "r" '((lambda () (interactive) (org-babel-load-file (expand-file-name "~/.emacs.d/config.org"))) :wk "reload emacs config"))
 
-    ;; Help
-    (my-leader-def
-      "h" '(:ignore t :wk "help")
-      "h f" '(describe-function :wk "describe function")
-      "h v" '(describe-variable :wk "describe variable"))
+  ;; Help
+  (my-leader-def
+    "h" '(:ignore t :wk "help")
+    "h f" '(describe-function :wk "describe function")
+    "h v" '(describe-variable :wk "describe variable"))
 
   ;; Window/buffer
-    (my-leader-def
-      "w" '(:ignore t :wk "windows")
-      "w l" '(buf-move-left :wk "window left")
-      "w r" '(buf-move-right :wk "window right")
-      "w u" '(buf-move-up :wk "window up")
-      "w d" '(buf-move-down :wk "window down"))
+  (my-leader-def
+    "w" '(:ignore t :wk "windows")
+    "w l" '(buf-move-left :wk "window left")
+    "w r" '(buf-move-right :wk "window right")
+    "w u" '(buf-move-up :wk "window up")
+    "w d" '(buf-move-down :wk "window down"))
 
-    ;; Git-timemachine
-    (my-leader-def
-      "g" '(:ignore t :wk "git")
-      "g j" '(git-timemachine-show-previous-revision :wk "previous commit")
-      "g k" '(git-timemachine-show-next-revision :wk "next commit"))
+  ;; Git-timemachine
+  (my-leader-def
+    "g" '(:ignore t :wk "git")
+    "g j" '(git-timemachine-show-previous-revision :wk "previous commit")
+    "g k" '(git-timemachine-show-next-revision :wk "next commit"))
 
-    ;; Toggle
-    (my-leader-def
-      "t" '(:ignore t :wk "toggle")
-      "t l" '(display-line-numbers-mode :wk "line numbers")
-      "t n" '(neotree-toggle :wk "neotree file viewer")
-      "t t" '(visual-line-mode :wk "truncated lines")
-      "t v" '(vterm-toggle :wk "vterm")
-      "t g" '(git-timemachine-toggle :wk "git-timemachine"))
+  ;; Toggle
+  (my-leader-def
+    "t" '(:ignore t :wk "toggle")
+    "t l" '(display-line-numbers-mode :wk "line numbers")
+    "t t" '(visual-line-mode :wk "truncated lines")
+    "t v" '(vterm-toggle :wk "vterm")
+    "t g" '(git-timemachine-toggle :wk "git-timemachine"))
+
+  ;; Neotree
+  (my-leader-def
+    "n" '(neotree-toggle :wk "neotree file tree viewer"))
+
 #+end_src
 
 ** Kill to Beginning of Line
