@@ -84,6 +84,16 @@
             'toggle-frame-maximized t)
 #+end_src
 
+*** C-x k Will Kill Current Buffer
+#+begin_src emacs-lisp
+  (defun bjm/kill-this-buffer ()
+    "Kill the current buffer."
+    (interactive)
+    (kill-buffer (current-buffer)))
+
+  (global-set-key (kbd "C-x k") 'bjm/kill-this-buffer)
+#+end_src
+
 ** Code
 
 *** Self-Closing Parenthesis
