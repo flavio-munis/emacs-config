@@ -38,6 +38,7 @@
   - [[#dashboard][Dashboard]]
   - [[#diminish][Diminish]]
   - [[#dired][Dired]]
+  - [[#doom-modeline][Doom Modeline]]
   - [[#emmet][Emmet]]
   - [[#exec-path-from-shell][Exec Path From Shell]]
   - [[#flycheck][Flycheck]]
@@ -51,6 +52,7 @@
   - [[#projectile][Projectile]]
   - [[#rainbow-delimiters][Rainbow Delimiters]]
   - [[#repeat-mode][Repeat Mode]]
+  - [[#spacious-padding][Spacious Padding]]
   - [[#source-code-block-tag-expansion][Source Code Block Tag Expansion]]
   - [[#sudo-edit][Sudo Edit]]
   - [[#web-mode][Web Mode]]
@@ -63,7 +65,7 @@
 
 ** Graphical Interface
 
-*** Disable Startup Message, Tools, Scrool and Menu Bar
+*** Disable Startup Message, Tools, Scroll and Menu Bar
 #+begin_src emacs-lisp
   (setq inhibit-splash-screen t)
   (menu-bar-mode -1)
@@ -305,7 +307,8 @@ Adds support to various programming languages.
     :config
     (add-hook 'web-mode-hook 'lsp)
     (add-hook 'c-mode-hook 'lsp)
-    (add-hook 'c++-mode-hook 'lsp))
+    (add-hook 'c++-mode-hook 'lsp)
+    (add-hook 'sh-mode-hook 'lsp))
 
   (use-package lsp-ui
     :ensure t
@@ -623,22 +626,25 @@ one, an error is signaled."
 #+begin_src emacs-lisp
   (use-package dashboard
     :ensure t 
-    :init
-    (setq initial-buffer-choice 'dashboard-open)
-    (setq dashboard-set-heading-icons t)
-    (setq dashboard-set-file-icons t)
-    (setq dashboard-icon-types 'all-the-icons)
-    (setq dashboard-banner-logo-title "Emacs Is More Than A Text Editor!")
-    (setq dashboard-startup-banner 'logo) ;; use standard emacs logo as banner
-    (setq dashboard-center-content nil) ;; set to 't' for centered content
-    (setq dashboard-items '((recents . 5)
-                            (agenda . 5 )
-                            (bookmarks . 3)
-                            (projects . 3)))
     :custom
     (dashboard-modify-heading-icons '((recents . "file-text")
                                       (bookmarks . "book")))
     :config
+    (setq initial-buffer-choice 'dashboard-open
+  		dashboard-set-heading-icons t
+  		dashboard-set-file-icons t
+  		dashboard-icon-types 'all-the-icons)
+    
+    ;;(setq dashboard-banner-logo-title "Emacs Is More Than A Text Editor!")
+    (setq dashboard-startup-banner 'logo
+  		dashboard-center-content t)
+
+    (setq dashboard-projects-backend 'projectile)
+    
+    (setq dashboard-items '((recents . 5)
+                            (bookmarks . 3)
+                            (projects . 3)))
+
     (dashboard-setup-startup-hook))
 #+end_src
 
@@ -658,6 +664,23 @@ one, an error is signaled."
                                   ("png" . "xviewer")
                                   ("mkv" . "mpv")
                                   ("mp4" . "mpv"))))
+#+end_src
+
+** Doom Modeline
+#+begin_src emacs-lisp
+  (use-package doom-modeline
+    :ensure t
+    :init (doom-modeline-mode 1)
+    :config
+    (setq doom-modeline-project-detection 'auto
+  		doom-modeline-buffer-file-name-style 'realative-from-project
+  		doom-modeline-major-mode-icon t
+  		doom-modeline-lsp t
+  		doom-modeline-lsp-icon t
+  		doom-modeline-buffer-name t
+  		doom-modeline-minor-modes nil
+  		doom-modeline-total-line-number t
+  		doom-modeline-percent-position nil))
 #+end_src
 
 ** Emmet
@@ -848,6 +871,13 @@ one, an error is signaled."
 	:custom
 	(repeat-too-dangerous '(kill-this-buffer))
 	(repeat-exit-timeout 5))
+#+end_src
+
+** Spacious Padding
+#+begin_src emacs-lisp
+  (use-package spacious-padding
+    :ensure t
+    :hook (after-init . spacious-padding-mode))
 #+end_src
 
 ** Source Code Block Tag Expansion
