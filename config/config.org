@@ -41,6 +41,7 @@
   - [[#emmet][Emmet]]
   - [[#exec-path-from-shell][Exec Path From Shell]]
   - [[#flycheck][Flycheck]]
+  - [[#gptel][Gptel]]
   - [[#highlight-indent-guides][Highlight Indent Guides]]
   - [[#ivy-counsel][Ivy (Counsel)]]
   - [[#move-text][move-text]]
@@ -638,6 +639,19 @@ one, an error is signaled."
     :ensure t
     :config
     (add-hook 'after-init-hook #'global-flycheck-mode))
+#+end_src
+
+** Gptel
+#+begin_src emacs-lisp
+  ;; Check package repo for more options
+  ;; https://github.com/karthink/gptel
+  (use-package gptel
+    :ensure t
+    :config
+    (setq
+     gptel-backend (gptel-make-gemini "Gemini" 
+  				   :key 'gptel-api-key-from-auth-source 
+  				   :stream t)))
 #+end_src
 
 ** Highlight Indent Guides
