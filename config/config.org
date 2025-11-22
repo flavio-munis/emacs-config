@@ -52,7 +52,6 @@
   - [[#projectile][Projectile]]
   - [[#rainbow-delimiters][Rainbow Delimiters]]
   - [[#repeat-mode][Repeat Mode]]
-  - [[#spacious-padding][Spacious Padding]]
   - [[#source-code-block-tag-expansion][Source Code Block Tag Expansion]]
   - [[#sudo-edit][Sudo Edit]]
   - [[#web-mode][Web Mode]]
@@ -871,13 +870,6 @@ one, an error is signaled."
 	:custom
 	(repeat-too-dangerous '(kill-this-buffer))
 	(repeat-exit-timeout 5))
-#+end_src
-
-** Spacious Padding
-#+begin_src emacs-lisp
-  (use-package spacious-padding
-    :ensure t
-    :hook (after-init . spacious-padding-mode))
 #+end_src
 
 ** Source Code Block Tag Expansion
