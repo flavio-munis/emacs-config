@@ -1,4 +1,3 @@
-
 #+TITLE: Emacs Personal Config
 #+AUTHOR: FLÁVIO MUNIZ
 #+STARTUP: showeverything
@@ -595,6 +594,7 @@ one, an error is signaled."
     (term-mode . centaur-tabs-local-mode)
     (vterm-mode . centaur-tabs-local-mode)
     (gptel-mode . centaur-tabs-local-mode)
+    (neotree-mode . centaur-tabs-local-mode)
     :bind
     (("C-<" . centaur-tabs-backward)
      ("C->" . centaur-tabs-forward)))
@@ -628,22 +628,22 @@ one, an error is signaled."
     :custom
     (dashboard-modify-heading-icons '((recents . "file-text")
                                       (bookmarks . "book")))
-    :config
-    (setq initial-buffer-choice 'dashboard-open
-  		dashboard-set-heading-icons t
-  		dashboard-set-file-icons t
-  		dashboard-icon-types 'all-the-icons)
+    (initial-buffer-choice 'dashboard-open)
+    (dashboard-icon-types 'all-the-icons)
+    (dashboard-set-heading-icons t)
+    (dashboard-set-file-icons t)
+    (dashboard-display-icons-p t)
     
     ;;(setq dashboard-banner-logo-title "Emacs Is More Than A Text Editor!")
-    (setq dashboard-startup-banner 'logo
-  		dashboard-center-content t)
+    (dashboard-startup-banner 'logo)
+    (dashboard-center-content t)
 
-    (setq dashboard-projects-backend 'projectile)
+    (dashboard-projects-backend 'projectile)
     
-    (setq dashboard-items '((recents . 5)
-                            (bookmarks . 3)
-                            (projects . 3)))
-
+    (dashboard-items '((recents . 5)
+  					 (projects . 3)
+                       (bookmarks . 3)))
+    :config
     (dashboard-setup-startup-hook))
 #+end_src
 
@@ -793,19 +793,30 @@ one, an error is signaled."
     :config
     (setq neo-smart-open t
           neo-show-hidden-files t
-          neo-window-width 55
+          neo-window-width 40
           neo-window-fixed-size nil
           inhibit-compacting-font-caches t
-          projectile-switch-project-action 'neotree-projectile-action
-          neo-theme (if (display-graphic-p) 'icons 'arrow)) 
-    ;; truncate long file names in neotree
+          projectile-switch-project-action 'neotree-projectile-action)
+
+    ;; Neotree configs set at time of execution
+    ;; - Truncate long file names
+    ;; - Neo-Theme: icons (graphic), classic (terminal)
+    ;; - Display Line Number Mode -1
     (add-hook 'neo-after-create-hook
               #'(lambda (_)
                   (with-current-buffer (get-buffer neo-buffer-name)
                     (setq truncate-lines t)
                     (setq word-wrap nil)
+  				  (setq neo-theme 
+  						(if (display-graphic-p) 'icons 'arrow))
+  				  (display-line-numbers-mode -1)
                     (make-local-variable 'auto-hscroll-mode)
-                    (setq auto-hscroll-mode nil)))))
+  				  (setq auto-hscroll-mode nil))))
+    )
+
+  ;; Neotree
+  (global-set-key
+   (kbd "<f8>") 'neotree-toggle)
 #+end_src
 
 ** Org Mode
