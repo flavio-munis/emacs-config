@@ -55,6 +55,7 @@
   - [[#sudo-edit][Sudo Edit]]
   - [[#web-mode][Web Mode]]
   - [[#which-key][Which-Key]]
+  - [[#zoom][Zoom]]
 - [[#terminals][Terminals]]
   - [[#eshell][Eshell]]
   - [[#vterm-and-vterm-toggle][Vterm and Vterm Toggle]]
@@ -959,6 +960,18 @@ Org-tempo is not a separate package but a module within org that can be enabled.
           which-key-max-description-length 25
           which-key-allow-imprecise-window-fit nil
           which-key-separator " → " ))
+#+end_src
+
+** Zoom
+#+begin_src emacs-lisp
+  (use-package zoom
+    :ensure t
+    :init
+    (zoom-mode t)
+    :config
+    (setq zoom-size '(0.618 . 0.618))
+    (setq zoom-ignore-predicates '((lambda () 
+  								   (> (count-lines (point-min) (point-max)) 20)))
 #+end_src
 
 * Terminals
