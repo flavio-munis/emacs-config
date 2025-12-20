@@ -971,7 +971,7 @@ Org-tempo is not a separate package but a module within org that can be enabled.
     :config
     (setq zoom-size '(0.618 . 0.618))
     (setq zoom-ignore-predicates '((lambda () 
-  								   (> (count-lines (point-min) (point-max)) 20)))
+  								   (> (count-lines (point-min) (point-max)) 20))))
 #+end_src
 
 * Terminals
