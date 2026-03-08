@@ -965,13 +965,13 @@ Org-tempo is not a separate package but a module within org that can be enabled.
 ** Zoom
 #+begin_src emacs-lisp
   (use-package zoom
-    :ensure t
-    :init
-    (zoom-mode t)
-    :config
-    (setq zoom-size '(0.618 . 0.618))
-    (setq zoom-ignore-predicates '((lambda () 
-  								   (> (count-lines (point-min) (point-max)) 20))))
+      :ensure t
+      :init
+      (zoom-mode t)
+      :custom
+      (zoom-size '(0.618 . 0.618))
+      (zoom-ignore-predicates '((lambda () 
+  								(< (count-lines (point-min) (point-max)) 20)))))
 #+end_src
 
 * Terminals
