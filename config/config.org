@@ -122,13 +122,31 @@
 #+end_src
 
 ** Theme
-Install and load catppuccin theme.
+
+*** Catppuccin
+Catppuccin theme for emacs (uncomment if ewal is not possible).
 #+begin_src emacs-lisp
-  (use-package catppuccin-theme
+  ;; (use-package catppuccin-theme
+  ;;   :ensure t
+  ;;   :config
+  ;;   (load-theme 'catppuccin t)
+  ;;   (setq catppuccin-flavor 'mocha))
+#+end_src
+
+*** Ewal
+Changes theme dynamically with pywal16 color palette.
+#+begin_src emacs-lisp
+  (use-package ewal
+    :ensure t
+    :custom
+    (ewal-use-builtin-always-p nil)
+    (ewal-force-tty-colors-in-daemon-p nil))
+
+  (use-package ewal-spacemacs-themes
     :ensure t
     :config
-    (load-theme 'catppuccin t)
-    (setq catppuccin-flavor 'mocha))
+    (load-theme 'ewal-spacemacs-modern t)
+    (enable-theme 'ewal-spacemacs-modern))
 #+end_src
 
 ** Font
