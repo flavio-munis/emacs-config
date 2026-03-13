@@ -18,8 +18,8 @@
   - [[#magit][Magit]]
   - [[#git-time-machine][Git Time Machine]]
 - [[#languages][Languages]]
-  - [[#eglot][Eglot]]
-  - [[#lsp-mode][Lsp Mode]]
+  - [[#eglotflycheck][Eglot/Flycheck]]
+  - [[#haskell-mode][Haskell Mode]]
   - [[#lua][Lua]]
   - [[#markdown][Markdown]]
   - [[#python-mode][Python Mode]]
@@ -40,7 +40,6 @@
   - [[#doom-modeline][Doom Modeline]]
   - [[#emmet][Emmet]]
   - [[#exec-path-from-shell][Exec Path From Shell]]
-  - [[#flycheck][Flycheck]]
   - [[#gptel][Gptel]]
   - [[#highlight-indent-guides][Highlight Indent Guides]]
   - [[#ivy-counsel][Ivy (Counsel)]]
@@ -293,44 +292,53 @@ Bind undo to Ctrl-z
 * Languages
 Adds support to various programming languages.
 
-** Eglot
+** Eglot/Flycheck
+
+*** Eglot
 #+begin_src emacs-lisp
   (use-package eglot
     :ensure t)
 
   ;; Clangd
-  ;;; Use Bear to generate compile_commands.json
-  ;; (add-to-list 'eglot-server-programs 
-  ;;   			 '((c++-mode c-mode) "clangd"))
-  ;; (add-hook 'c-mode-hook 'eglot-ensure)
-  ;; (add-hook 'c++-mode-hook 'eglot-ensure)
+  ;; Use Bear to generate compile_commands.json
+  (add-to-list 'eglot-server-programs 
+    			 '((c++-mode c-mode) "clangd"))
+  (add-hook 'c-mode-hook 'eglot-ensure)
+  (add-hook 'c++-mode-hook 'eglot-ensure)
 
-  ;; ;; Tuareg
-  ;; (add-to-list 'eglot-server-programs
-  ;;                '(tuareg-mode . ("ocamllsp")))
-  ;; (add-hook 'tuareg-mode 'eglot-ensure)
+  ;; Haskell
+  (add-to-list 'eglot-server-programs
+               '(haskell-mode . ("haskell-language-server-wrapper" "--lsp")))
+  (add-hook 'haskell-mode-hook 'eglot-ensure)
 
+  ;; Shell Scripts
+  (add-to-list 'eglot-server-programs
+  			 '((sh-mode bash-ts-mode) . ("bash-language-server" "start")))
+  (add-hook 'sh-mode 'eglot-ensure)
+  (add-hook 'bash-ts-mode 'eglot-ensure)
 #+end_src
 
-** Lsp Mode
+*** Flycheck
 #+begin_src emacs-lisp
-  (use-package lsp-mode
-    :ensure t
-    :init
-    (setq lsp-auto-guess-root nil)
-    :hook
-    (lsp-mode . lsp-enable-which-key-integration)
-    :commands lsp
-    :config
-    (add-hook 'web-mode-hook 'lsp)
-    (add-hook 'c-mode-hook 'lsp)
-    (add-hook 'c++-mode-hook 'lsp)
-    (add-hook 'sh-mode-hook 'lsp))
+  (use-package flycheck
+    :ensure t)
+    ;;:config
+    ;;(add-hook 'after-init-hook #'global-flycheck-mode))
+#+end_src
 
-  (use-package lsp-ui
+*** Flycheck-Eglot
+#+begin_src emacs-lisp
+  (use-package flycheck-eglot
     :ensure t
-    :hook (lsp-mode . lsp-ui-mode)
-    :commands lsp-ui-mode)
+    :after (flycheck eglot)
+    :config
+    (global-flycheck-eglot-mode 1))
+#+end_src
+
+** Haskell Mode
+#+begin_src emacs-lisp
+  (use-package haskell-mode
+    :ensure t)
 #+end_src
 
 ** Lua
@@ -355,10 +363,6 @@ Need To install python-lsp-server and jedi-language-server packages.
 
 #+begin_src emacs-lisp
   (use-package python-mode
-    :ensure t
-    :hook (python-mode . lsp-deferred))
-
-  (use-package lsp-jedi
     :ensure t)
 #+end_src
 
@@ -369,16 +373,6 @@ Python virtual environments for emacs. Use M-x pyvenv-workon to change python ve
     :ensure t
     :init
     (setenv "WORKON_HOME" "~/.pyenv/versions"))
-    ;;:config
-    ;; Set correct Python interpreter
-    ;;(setq pyvenv-post-activate-hooks
-  		;;(list 
-  		 ;;(lambda () 
-  		   ;;(setq python-shell-interpreter (concat pyvenv-virtual-env "bin/python3")))))
-    ;;(setq pyvenv-post-deactivate-hooks
-  		;;(list 
-  		 ;;(lambda ()
-  		   ;;(setq python-shell-interpreter "python3")))))
 #+end_src
 
 ** OCaml
@@ -389,13 +383,6 @@ Python virtual environments for emacs. Use M-x pyvenv-workon to change python ve
   (use-package tuareg
     :ensure t
     :mode (("\\.ocamlinit\\'" . tuareg-mode)))
-
-  (use-package ocaml-eglot
-    :ensure t
-    :after tuareg
-    :hook
-    (tuareg-mode . ocaml-eglot)
-    (ocaml-eglot . eglot-ensure))
 #+end_src
 
 ** Racket
@@ -716,14 +703,6 @@ one, an error is signaled."
     :ensure t
     :config 
     (exec-path-from-shell-initialize))
-#+end_src
-
-** Flycheck
-#+begin_src emacs-lisp
-  (use-package flycheck
-    :ensure t
-    :config
-    (add-hook 'after-init-hook #'global-flycheck-mode))
 #+end_src
 
 ** Gptel
