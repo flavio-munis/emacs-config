@@ -352,15 +352,15 @@ Adds support to various programming languages.
 #+begin_src emacs-lisp
   (use-package markdown-mode
     :ensure t
-    :mode ("README\\.md\\'" . gfm-mode)
+    :mode (("README\\.md\\'" . gfm-mode)
+  		 ("\\.md\\'" . markdown-mode)
+  		 ("\\.markdown\\'" . markdown-mode))
     :init (setq markdown-command "multimarkdown")
     :bind (:map markdown-mode-map
                 ("C-c C-e" . markdown-do)))
 #+end_src
 
 ** Python Mode
-Need To install python-lsp-server and jedi-language-server packages.
-
 #+begin_src emacs-lisp
   (use-package python-mode
     :ensure t)
