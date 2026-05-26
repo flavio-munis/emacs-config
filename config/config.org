@@ -20,14 +20,12 @@
 - [[#languages][Languages]]
   - [[#eglotflycheck][Eglot/Flycheck]]
   - [[#haskell-mode][Haskell Mode]]
-  - [[#lua][Lua]]
   - [[#markdown][Markdown]]
-  - [[#python-mode][Python Mode]]
   - [[#pyvenv][pyvenv]]
   - [[#ocaml][OCaml]]
   - [[#racket][Racket]]
   - [[#sml][Sml]]
-  - [[#yamll][yamll]]
+  - [[#treesit-auto][Treesit-auto]]
 - [[#packages][Packages]]
   - [[#ace-window][Ace Window]]
   - [[#all-the-icons][All The Icons]]
@@ -302,7 +300,7 @@ Adds support to various programming languages.
   ;; Clangd
   ;; Use Bear to generate compile_commands.json
   (add-to-list 'eglot-server-programs 
-    			 '((c++-mode c-mode) "clangd"))
+      		 '((c++-mode c-mode) "clangd"))
   (add-hook 'c-mode-hook 'eglot-ensure)
   (add-hook 'c++-mode-hook 'eglot-ensure)
 
@@ -313,9 +311,14 @@ Adds support to various programming languages.
 
   ;; Shell Scripts
   (add-to-list 'eglot-server-programs
-  			 '((sh-mode bash-ts-mode) . ("bash-language-server" "start")))
+    			 '((sh-mode bash-ts-mode) . ("bash-language-server" "start")))
   (add-hook 'sh-mode 'eglot-ensure)
   (add-hook 'bash-ts-mode 'eglot-ensure)
+
+  ;; Javascript/Typescript
+  (add-hook 'typescript-ts-mode 'englot-ensure)
+  (add-hook 'js-ts-mode 'englot-ensure)
+  (add-hook 'tsx-ts-mode 'englot-ensure)
 #+end_src
 
 *** Flycheck
@@ -338,14 +341,9 @@ Adds support to various programming languages.
 ** Haskell Mode
 #+begin_src emacs-lisp
   (use-package haskell-mode
-    :ensure t)
-#+end_src
-
-** Lua
-#+begin_src emacs-lisp
-  (use-package lua-mode
     :ensure t
-    :defer 1)
+    :config
+    (add-hook 'haskell-mode-hook 'interactive-haskell-mode))
 #+end_src
 
 ** Markdown
@@ -358,12 +356,6 @@ Adds support to various programming languages.
     :init (setq markdown-command "multimarkdown")
     :bind (:map markdown-mode-map
                 ("C-c C-e" . markdown-do)))
-#+end_src
-
-** Python Mode
-#+begin_src emacs-lisp
-  (use-package python-mode
-    :ensure t)
 #+end_src
 
 ** pyvenv
@@ -397,11 +389,15 @@ Python virtual environments for emacs. Use M-x pyvenv-workon to change python ve
     :ensure t)
 #+end_src
 
-** yamll
+** Treesit-auto
 #+begin_src emacs-lisp
-  (use-package yaml-mode
-    :ensure t)
-  (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
+  (use-package treesit-auto
+    :ensure t
+    :config
+    (setq treesit-auto-install t)
+    (global-treesit-auto-mode)
+    (treesit-auto-add-to-auto-mode-alist 'all)
+    (treesit-auto-install-all ))
 #+end_src
 
 * Packages
