@@ -6,7 +6,7 @@
 (package-initialize)
 
 ;; Sets the path to custom file
-(setq custom-file "~/.emacs.d/custom.el")
+(setq custom-file "~/.config/emacs/custom.el")
 (load custom-file)
 
 ;; Use-package configurations
@@ -26,12 +26,4 @@
   (setq highlight-indent-guides-auto-enabled t))
 
 ;; Sets config.org as the configuration file for emacs
-(org-babel-load-file
- (expand-file-name
-  "config.org"
-  user-emacs-directory))
-
-;; Ewal File watcher (Comment out if ewal theme not available)
-(add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
-(require 'ewal-auto-update)
-(my/start-ewal-auto-update)
+(org-babel-load-file (expand-file-name "~/.config/emacs/config.org"))

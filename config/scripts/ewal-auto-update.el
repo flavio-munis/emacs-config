@@ -1,6 +1,10 @@
 ;;; ewal-auto-update.el -- Watches changes to ~/.cache/wal/ and updates the theme -*- lexical-binding: t; -*-
 
+;; Code:
+
 (require 'filenotify)
+(require 'ewal)
+(require 'ewal-spacemacs-themes)
 
 (defun my/ewal-refresh-theme (&rest _args)
   "Reload ewal colors and re-apply the theme when pywal16 cache changes"
@@ -18,3 +22,4 @@
 	  (message "Warning: Pywal cache not found at %s" wal-cache))))
 
 (provide 'ewal-auto-update)
+;; ewal-auto-update.el ends here

@@ -3,136 +3,102 @@
 #+STARTUP: showeverything
 
 * Table of Contents :toc:
+- [[#scripts][Scripts]]
+  - [[#scripts-path][Scripts Path]]
+- [[#themes][Themes]]
+  - [[#catppuccin][Catppuccin]]
+  - [[#ewal-default][Ewal (Default)]]
 - [[#general-settings][General Settings]]
-  - [[#graphical-interface][Graphical Interface]]
-  - [[#code][Code]]
-  - [[#theme][Theme]]
-  - [[#font][Font]]
+  - [[#disable-auto-save-and-auto-backup][Disable Auto Save and Auto Backup]]
+  - [[#disable-startup-message-tools-scroll-and-menu-bar][Disable Startup Message, Tools, Scroll and Menu Bar]]
+  - [[#editor-config][Editor Config]]
+  - [[#enable-columnline-number-and-truncated-lines][Enable Column/Line Number and Truncated Lines]]
+  - [[#enable-eletric-indent][Enable Eletric Indent]]
+  - [[#full-screen-at-startup][Full Screen at Startup]]
+  - [[#self-closing-parenthesis][Self-Closing Parenthesis]]
+  - [[#use-yn-in-prompts][Use y/n in Prompts]]
+- [[#font][Font]]
+  - [[#font-face][Font Face]]
+  - [[#nerd-icons][Nerd Icons]]
 - [[#key-bindings][Key Bindings]]
   - [[#general][General]]
-  - [[#kill-to-beginning-of-line][Kill to Beginning of Line]]
-  - [[#shells][Shells]]
-  - [[#smart-line-beginning][Smart Line Beginning]]
+  - [[#buffer][Buffer]]
+  - [[#files][Files]]
+  - [[#help][Help]]
+  - [[#others][Others]]
+  - [[#projectile][Projectile]]
+  - [[#text][Text]]
+  - [[#toogle][Toogle]]
   - [[#undo][Undo]]
 - [[#git][Git]]
   - [[#magit][Magit]]
   - [[#git-time-machine][Git Time Machine]]
-- [[#languages][Languages]]
-  - [[#eglotflycheck][Eglot/Flycheck]]
-  - [[#haskell-mode][Haskell Mode]]
-  - [[#markdown][Markdown]]
-  - [[#pyvenv][pyvenv]]
-  - [[#ocaml][OCaml]]
-  - [[#racket][Racket]]
-  - [[#sml][Sml]]
-  - [[#treesit-auto][Treesit-auto]]
+- [[#org-mode][Org Mode]]
+  - [[#toc][Toc]]
+  - [[#enable-org-bullets][Enable Org Bullets]]
+  - [[#org-tempo-block-tag-expansion][Org Tempo (Block Tag Expansion)]]
 - [[#packages][Packages]]
   - [[#ace-window][Ace Window]]
-  - [[#all-the-icons][All The Icons]]
   - [[#buffer-move][Buffer Move]]
+  - [[#cape][Cape]]
   - [[#centaur-tabs][Centaur Tabs]]
-  - [[#company][Company]]
+  - [[#corfu][Corfu]]
   - [[#dashboard][Dashboard]]
   - [[#diminish][Diminish]]
   - [[#dired][Dired]]
   - [[#doom-modeline][Doom Modeline]]
-  - [[#emmet][Emmet]]
+  - [[#eglot][Eglot]]
   - [[#exec-path-from-shell][Exec Path From Shell]]
+  - [[#flycheck][Flycheck]]
+  - [[#flycheck-eglot][Flycheck-Eglot]]
   - [[#gptel][Gptel]]
   - [[#highlight-indent-guides][Highlight Indent Guides]]
-  - [[#ivy-counsel][Ivy (Counsel)]]
-  - [[#move-text][move-text]]
+  - [[#imenu-list][Imenu List]]
+  - [[#ivycounselswiper][Ivy/Counsel/Swiper]]
+  - [[#move-text][Move-text]]
   - [[#neotree][Neotree]]
-  - [[#org-mode][Org Mode]]
   - [[#paredit][Paredit]]
-  - [[#projectile][Projectile]]
+  - [[#projectile-1][Projectile]]
   - [[#rainbow-delimiters][Rainbow Delimiters]]
   - [[#repeat-mode][Repeat Mode]]
-  - [[#source-code-block-tag-expansion][Source Code Block Tag Expansion]]
   - [[#sudo-edit][Sudo Edit]]
+  - [[#treesit-auto][Treesit-auto]]
   - [[#web-mode][Web Mode]]
   - [[#which-key][Which-Key]]
   - [[#zoom][Zoom]]
+- [[#languages][Languages]]
+  - [[#cc][C/C++]]
+  - [[#haskell][Haskell]]
+  - [[#standard-ml-sml][Standard ML (SML)]]
+  - [[#mardown][Mardown]]
+  - [[#ocaml][OCaml]]
+  - [[#python][Python]]
+  - [[#qml][Qml]]
+  - [[#racket][Racket]]
+  - [[#shell-scripts][Shell Scripts]]
 - [[#terminals][Terminals]]
   - [[#eshell][Eshell]]
   - [[#vterm-and-vterm-toggle][Vterm and Vterm Toggle]]
 
-* General Settings
-
-** Graphical Interface
-
-*** Disable Startup Message, Tools, Scroll and Menu Bar
+* Scripts
+** Scripts Path
 #+begin_src emacs-lisp
-  (setq inhibit-splash-screen t)
-  (menu-bar-mode -1)
-  (tool-bar-mode -1)
-  (scroll-bar-mode -1)
+  (add-to-list 'load-path "~/.config/emacs/scripts/")
 #+end_src
 
-*** Enable Column/Line Number and Truncated Lines
+* Themes
+** Catppuccin
 #+begin_src emacs-lisp
-  (column-number-mode 1)
-  (global-display-line-numbers-mode 1)
-  (setq display-line-numbers-type 'relative)
-  (global-visual-line-mode 1)
+  (use-package catppuccin-theme
+    :ensure t
+    :custom
+    (catppuccin-flavor 'mocha))
 #+end_src
 
-*** Full Screen at Startup
+** Ewal (Default)
+Dynamic theme based on pywal16 generated colors. 
 #+begin_src emacs-lisp
-  (add-hook 'window-setup-hook
-            'toggle-frame-maximized t)
-#+end_src
-
-*** C-x k Will Kill Current Buffer
-#+begin_src emacs-lisp
-  (defun bjm/kill-this-buffer ()
-    "Kill the current buffer."
-    (interactive)
-    (kill-buffer (current-buffer)))
-
-  (global-set-key (kbd "C-x k") 'bjm/kill-this-buffer)
-#+end_src
-
-** Code
-
-*** Self-Closing Parenthesis
-#+begin_src emacs-lisp
-  (electric-pair-mode 1)
-#+end_src
-
-*** Custom Tab Width
-#+begin_src emacs-lisp
-  (setq-default tab-width 4)
-  (setq c-default-stayle "linux")
-  (setq c-basic-offset 4)
-#+end_src
-
-*** Disable Auto Save and Auto Backup
-#+begin_src emacs-lisp
-  (setq make-bakcup-files nil)
-  (setq auto-save-default nil)
-#+end_src
-
-*** Use y/n in Prompts
-#+begin_src emacs-lisp
-  (setq use-short-answers t)
-#+end_src
-
-** Theme
-
-*** Catppuccin
-Catppuccin theme for emacs (uncomment if ewal is not possible).
-#+begin_src emacs-lisp
-  ;; (use-package catppuccin-theme
-  ;;   :ensure t
-  ;;   :config
-  ;;   (load-theme 'catppuccin t)
-  ;;   (setq catppuccin-flavor 'mocha))
-#+end_src
-
-*** Ewal
-Changes theme dynamically with pywal16 color palette.
-#+begin_src emacs-lisp
+  ;; Pywal/Ewal
   (use-package ewal
     :ensure t
     :custom
@@ -144,281 +110,121 @@ Changes theme dynamically with pywal16 color palette.
     :config
     (load-theme 'ewal-spacemacs-modern t)
     (enable-theme 'ewal-spacemacs-modern))
+
+  ;; Start ewal colors file watcher
+  (require 'ewal-auto-update)
+  (my/start-ewal-auto-update)
 #+end_src
 
-** Font
+* General Settings
+
+** Disable Auto Save and Auto Backup
+#+begin_src emacs-lisp
+  (setq make-backup-files nil)
+  (setq auto-save-default nil)
+#+end_src
+
+** Disable Startup Message, Tools, Scroll and Menu Bar
+#+begin_src emacs-lisp
+  (setq inhibit-splash-screen t)
+  (menu-bar-mode -1)
+  (tool-bar-mode -1)
+  (scroll-bar-mode -1)
+#+end_src
+
+** Editor Config
+#+begin_src emacs-lisp
+  (editorconfig-mode t)
+#+end_src
+
+** Enable Column/Line Number and Truncated Lines
+#+begin_src emacs-lisp
+  (column-number-mode 1)
+  (global-display-line-numbers-mode 1)
+  (setq display-line-numbers-type 'relative)
+  (global-visual-line-mode 1)
+#+end_src
+
+** Enable Eletric Indent
+#+begin_src emacs-lisp
+  (electric-indent-mode 1)
+#+end_src
+
+** Full Screen at Startup
+#+begin_src emacs-lisp
+  (add-hook 'window-setup-hook
+            'toggle-frame-maximized t)
+#+end_src
+
+** Self-Closing Parenthesis
+#+begin_src emacs-lisp
+  (electric-pair-mode 1)
+#+end_src
+
+** Use y/n in Prompts
+#+begin_src emacs-lisp
+  (setq use-short-answers t)
+#+end_src
+
+* Font
+Define emacs fonts.
+
+** Font Face
 Set custom font, and makes all comments be in italic.
 #+begin_src emacs-lisp
-  (add-to-list 'default-frame-alist
-             '(font . "UbuntuMono Nerd Font-14"))
-  (set-face-attribute 'default t
-                      :font "UbuntuMono Nerd Font-14")
+  (set-face-attribute 'default nil
+  					:font "UbuntuMono Nerd Font"
+  					:height 140
+  					:weight 'regular)
 
   (set-face-attribute 'font-lock-comment-face nil
-    :slant 'italic)
+  					:slant 'italic)
+
+  (add-to-list 'default-frame-alist
+  			 '(font . "UbuntuMono Nerd Font-14"))
 #+end_src
 
+** Nerd Icons
+#+begin_src emacs-lisp
+  (use-package nerd-icons
+    ;; :custom
+    ;; The Nerd Font you want to use in GUI
+    ;; "Symbols Nerd Font Mono" is the default and is recommended
+    ;; but you can use any other Nerd Font if you want
+    ;; (nerd-icons-font-family "Symbols Nerd Font Mono")
+    )
+
+  (use-package nerd-icons-dired
+    :hook
+    (dired-mode . nerd-icons-dired-mode))
+
+  (use-package nerd-icons-ivy-rich
+    :ensure t
+    :init
+    (nerd-icons-ivy-rich-mode 1))
+
+  (use-package nerd-icons-corfu
+    :ensure t)
+#+end_src
 
 * Key Bindings
 Definitions of Almost all Key Bindings Used in this Config.
 
 ** General
+Define "C-c" as leader key.
 #+begin_src emacs-lisp
   (use-package general
     :ensure t
     :config
-    ;; Creates a prefix caller
     (general-create-definer my-leader-def
       :prefix "C-c"
       :keymaps 'override))
-
-  ;; Dired
-  (my-leader-def
-    "d" '(:ignore t :wk "dired")
-    "d j" '(dired-jump :wk "opens dired in current directory")
-    "d n" '(neotree-dir :wk "open current directory in neotree"))
-
-  ;; File find/edit
-  (my-leader-def
-    "f" '(:ignore t :wk "find/edit") 
-    "f f" '(find-file :wk "find file")
-    "f c" '((lambda () (interactive) (find-file "~/.config/emacs/config.org")) :wk "edit emacs config")
-    "f r" '(counsel-recentf :wk "find recent files"))
-
-  ;; Others
-  (my-leader-def
-    "TAB TAB" '(comment-line :wk "comment Line(s)")
-    "r" '((lambda () (interactive) (org-babel-load-file (expand-file-name "~/.emacs.d/config.org"))) :wk "reload emacs config"))
-
-  ;; Help
-  (my-leader-def
-    "h" '(:ignore t :wk "help")
-    "h f" '(describe-function :wk "describe function")
-    "h v" '(describe-variable :wk "describe variable"))
-
-  ;; Window/buffer
-  (my-leader-def
-    "w" '(:ignore t :wk "windows")
-    "w l" '(buf-move-left :wk "window left")
-    "w r" '(buf-move-right :wk "window right")
-    "w u" '(buf-move-up :wk "window up")
-    "w d" '(buf-move-down :wk "window down"))
-
-  ;; Git-timemachine
-  (my-leader-def
-    "g" '(:ignore t :wk "git")
-    "g j" '(git-timemachine-show-previous-revision :wk "previous commit")
-    "g k" '(git-timemachine-show-next-revision :wk "next commit"))
-
-  ;; Toggle
-  (my-leader-def
-    "t" '(:ignore t :wk "toggle")
-    "t l" '(display-line-numbers-mode :wk "line numbers")
-    "t t" '(visual-line-mode :wk "truncated lines")
-    "t v" '(vterm-toggle :wk "vterm")
-    "t g" '(git-timemachine-toggle :wk "git-timemachine"))
-
-  ;; Neotree
-  (my-leader-def
-    "n" '(neotree-toggle :wk "neotree file tree viewer"))
-
 #+end_src
 
-** Kill to Beginning of Line
-Kill from point to beginning of line.
+** Buffer
+*** Ace Window
 #+begin_src emacs-lisp
-  (defun phg/kill-to-bol ()
-    "Kill from point to beginning of line."
-    (interactive)
-    (kill-line 0))
-
-  (global-set-key
-   (kbd "C-<backspace>") 'phg/kill-to-bol)
-#+end_src
-
-** Shells
-Bind F9 to Eshell and F10 to Vterm.
-#+begin_src emacs-lisp
-  ;; Open eshell
-  (global-set-key
-   (kbd "<f9>") 'eshell)
-
-  ;; Open vterm
-  (global-set-key
-   (kbd "<f10>") 'vterm-toggle)
-#+end_src
-
-** Smart Line Beginning 
-Move to Start of Line Respecting Identation.
-#+begin_src emacs-lisp
-  (defun smart-line-beginning ()
-    "Move point to the beginning of text on the current line; if that is already
-  the current position of point, then move it to the beginning of the line."
-    (interactive)
-    (let ((pt (point)))
-  	(beginning-of-line-text)
-    	(when (eq pt (point))
-    	  (beginning-of-line))))
-
-  ;; Set C a to Smart Line Beginning Fucntion
-  (global-set-key
-   (kbd "C-a") 'smart-line-beginning)
-#+end_src
-
-** Undo
-Bind undo to Ctrl-z
-#+begin_src emacs-lisp
-  (global-set-key
-   (kbd "C-z") 'undo)  
-#+end_src
-
-
-* Git
-
-** Magit
-#+begin_src emacs-lisp
-  (use-package magit
-    :ensure t)
-#+end_src
-
-** Git Time Machine
-#+begin_src emacs-lisp
-  (use-package git-timemachine
-    :ensure t)
-#+end_src
-
-* Languages
-Adds support to various programming languages.
-
-** Eglot/Flycheck
-
-*** Eglot
-#+begin_src emacs-lisp
-  (use-package eglot
-    :ensure t)
-
-  ;; Clangd
-  ;; Use Bear to generate compile_commands.json
-  (add-to-list 'eglot-server-programs 
-      		 '((c++-mode c-mode) "clangd"))
-  (add-hook 'c-mode-hook 'eglot-ensure)
-  (add-hook 'c++-mode-hook 'eglot-ensure)
-
-  ;; Haskell
-  (add-to-list 'eglot-server-programs
-               '(haskell-mode . ("haskell-language-server-wrapper" "--lsp")))
-  (add-hook 'haskell-mode-hook 'eglot-ensure)
-
-  ;; Shell Scripts
-  (add-to-list 'eglot-server-programs
-    			 '((sh-mode bash-ts-mode) . ("bash-language-server" "start")))
-  (add-hook 'sh-mode 'eglot-ensure)
-  (add-hook 'bash-ts-mode 'eglot-ensure)
-
-  ;; Javascript/Typescript
-  (add-hook 'typescript-ts-mode 'englot-ensure)
-  (add-hook 'js-ts-mode 'englot-ensure)
-  (add-hook 'tsx-ts-mode 'englot-ensure)
-#+end_src
-
-*** Flycheck
-#+begin_src emacs-lisp
-  (use-package flycheck
-    :ensure t)
-    ;;:config
-    ;;(add-hook 'after-init-hook #'global-flycheck-mode))
-#+end_src
-
-*** Flycheck-Eglot
-#+begin_src emacs-lisp
-  (use-package flycheck-eglot
-    :ensure t
-    :after (flycheck eglot)
-    :config
-    (global-flycheck-eglot-mode 1))
-#+end_src
-
-** Haskell Mode
-#+begin_src emacs-lisp
-  (use-package haskell-mode
-    :ensure t
-    :config
-    (add-hook 'haskell-mode-hook 'interactive-haskell-mode))
-#+end_src
-
-** Markdown
-#+begin_src emacs-lisp
-  (use-package markdown-mode
-    :ensure t
-    :mode (("README\\.md\\'" . gfm-mode)
-  		 ("\\.md\\'" . markdown-mode)
-  		 ("\\.markdown\\'" . markdown-mode))
-    :init (setq markdown-command "multimarkdown")
-    :bind (:map markdown-mode-map
-                ("C-c C-e" . markdown-do)))
-#+end_src
-
-** pyvenv
-Python virtual environments for emacs. Use M-x pyvenv-workon to change python version to local and restart lsp with M-x lsp-workspace-restart. 
-#+begin_src emacs-lisp
-  (use-package pyvenv
-    :ensure t
-    :init
-    (setenv "WORKON_HOME" "~/.pyenv/versions"))
-#+end_src
-
-** OCaml
-#+begin_src emacs-lisp
-  (use-package caml
-    :ensure t)
-
-  (use-package tuareg
-    :ensure t
-    :mode (("\\.ocamlinit\\'" . tuareg-mode)))
-#+end_src
-
-** Racket
-#+begin_src emacs-lisp
-  (use-package racket-mode
-    :ensure t)
-#+end_src
-
-** Sml
-#+begin_src emacs-lisp
-  (use-package sml-mode
-    :ensure t)
-#+end_src
-
-** Treesit-auto
-#+begin_src emacs-lisp
-  (use-package treesit-auto
-    :ensure t
-    :config
-    (setq treesit-auto-install t)
-    (global-treesit-auto-mode)
-    (treesit-auto-add-to-auto-mode-alist 'all)
-    (treesit-auto-install-all ))
-#+end_src
-
-* Packages
-
-** Ace Window
-You can swap windows by calling ace-window with a prefix argument C-u.
-
-You can delete the selected window by calling ace-window with a double prefix argument, i.e. C-u C-u.
-#+begin_src emacs-lisp
-  (use-package ace-window
-    :ensure t)
-
-  ;; Binds "Meta - o" To ace-window main function
-  (global-set-key (kbd "M-o") 'ace-window)
-
-  ;; Windows Have Visual Indication of it's Code
-  (ace-window-display-mode 1)
-
-  ;; Set Group of Keys For Windows
-  (setq aw-keys '(?q ?w ?e ?r ?t ?y ?u ?i ?o ?p))
-
+  ;; Ace Window
   (defun ace-window-prefix ()
     "Use `ace-window' to display the buffer of the next command.
   The next buffer is the buffer displayed by the next command invoked
@@ -437,193 +243,292 @@ You can delete the selected window by calling ace-window with a double prefix ar
      nil "[ace-window]")
     (message "Use `ace-window' to display next command buffer..."))
 
-  (keymap-global-set "C-x 4 o" 'ace-window-prefix)
+  (keymap-global-set "C-M-o" 'ace-window-prefix)
+  (keymap-global-set "M-o"   'ace-window)
+#+end_src
+
+*** Buffer Move
+#+begin_src emacs-lisp
+    ;; Buffer Move
+  (my-leader-def
+    "<up>"    '(buf-move-up    :wk "Swap current buffer with the top one")
+    "<down>"  '(buf-move-down  :wk "Swap current buffer with the bottom one")
+    "<left>"  '(buf-move-left  :wk "Swap current buffer with the left one")
+    "<right>" '(buf-move-right :wk "Swap current buffer with the right one"))
+#+end_src
+
+*** Centaur Tabs
+#+begin_src emacs-lisp
+
+  ;; Centaur Tabs
+  (keymap-global-set "C-<" 'centaur-tabs-backward)
+  (keymap-global-set "C->" 'centaur-tabs-forward)
+
+  (my-leader-def
+    "b" '(centaur-tabs-counsel-switch-group :wk "Switch centaur tab group"))
+#+end_src
+
+*** C-x k Will Kill Current Buffer
+#+begin_src emacs-lisp
+  (defun bjm/kill-this-buffer ()
+    "Kill the current buffer."
+    (interactive)
+    (kill-buffer (current-buffer)))
+
+  (keymap-global-set "C-x k" 'bjm/kill-this-buffer)
+#+end_src
+
+** Files
+#+begin_src emacs-lisp
+  ;; File find/edit
+  (my-leader-def
+    "f" '(:ignore t :wk "find/edit") 
+    "f c" '((lambda () (interactive) 
+  			(find-file "~/.config/emacs/config.org")) 
+  		  :wk "Open emacs config file")
+    "f i" '((lambda () (interactive) 
+  			(find-file "~/.config/emacs/init.el"))
+  			:wk "Open emacs init file")
+    "f s" '(sudo-edit-find-file :wk "Sudo find file")
+    "f S" '(sudo-edit :wk "Sudo edit file")
+    "f r" '(counsel-recentf :wk "find recent files")
+    "f g" '(counsel-grep-or-swiper :wk "Search for string in current file"))
+
+  ;; Locate
+  (keymap-global-set "C-x l" 'counsel-locate)
+#+end_src
+
+** Help
+#+begin_src emacs-lisp
+  (my-leader-def
+    "h" '(:ignore t :wk "Help")
+    "h f" '(counsel-describe-function :wk "Describe function")
+    "h v" '(counsel-describe-variable :wk "Describe variable")
+    "h s" '(counsel-describe-symbol   :wk "Describe symbol")
+    "h m" '(describe-mode             :wk "Describe mode")
+    "h i" '(info                      :wk "Info"))
+#+end_src
+
+** Others
+#+begin_src emacs-lisp
+  ;; Reload emacs config
+  (my-leader-def
+    "r" '((lambda () (interactive) (org-babel-load-file (expand-file-name "~/.config/emacs/config.org"))) :wk "Reload emacs config"))
+#+end_src
+
+** Projectile
+#+begin_src emacs-lisp
+  ;; Projectile
+  (my-leader-def
+    "p" '(projectile-command-map :wk "Projectile"))
+#+end_src
+
+** Text
+#+begin_src emacs-lisp
+  (defun smart-line-beginning ()
+    "Move point to the beginning of text on the current line; if that is already
+    the current position of point, then move it to the beginning of the line."
+    (interactive)
+    (let ((pt (point)))
+    	(beginning-of-line-text)
+      (when (eq pt (point))
+        (beginning-of-line))))
+
+  (defun phg/kill-to-bol ()
+    "Kill from point to beginning of line."
+    (interactive)
+    (kill-line 0))
+
+  ;; Bind dor moving to start of the line respecting identation
+  (keymap-global-set "C-a" 'smart-line-beginning)
+
+  ;; Bind for Killing from pointer to start of line
+  (keymap-global-set "C-<backspace>" 'phg/kill-to-bol)
+
+  ;; Zoom In/Out
+  (keymap-global-set "C-="            'text-scale-increase)
+  (keymap-global-set "C--"            'text-scale-decrease)
+  (keymap-global-set "C-<wheel-up>"   'text-scale-increase)
+  (keymap-global-set "C-<wheel-down>" 'text-scale-decrease)
+
+  ;; Swap default isearch for swiper-isearch
+  (keymap-global-set "C-s" #'swiper-isearch)
+
+  ;; Comment Lines
+  (my-leader-def
+    "TAB TAB" '(comment-line :wk "Comment lines"))
 
 #+end_src
 
-** All The Icons
+** Toogle
+Commands that open new windows and can be opened/closed via a toggler.
 #+begin_src emacs-lisp
-  (use-package all-the-icons
-    :ensure t
-    :if (display-graphic-p)
-    :config (unless (member "all-the-icons" (font-family-list))
-    (all-the-icons-install-fonts t)))
+  ;; Open eshell
+  (keymap-global-set "<f9>" 'eshell)
 
-  (use-package all-the-icons-dired
+  ;; Open vterm
+  (keymap-global-set "<f10>" 'vterm-toggle)
+
+  ;; Neotree
+  (keymap-global-set "<f8>" 'neotree-toggle)
+
+  ;; Imenu List
+  (keymap-global-set "M-'" 'imenu-list-smart-toggle)
+#+end_src
+
+** Undo
+Bind undo to Ctrl-z.
+#+begin_src emacs-lisp
+  (keymap-global-set "C-z" 'undo)
+#+end_src
+
+
+* Git
+
+** Magit
+#+begin_src emacs-lisp
+  (use-package magit
+    :ensure t)
+#+end_src
+
+** Git Time Machine
+#+begin_src emacs-lisp
+  (use-package git-timemachine
+    :ensure t)
+#+end_src
+
+* Org Mode
+** Toc
+Allows us to create a Table of Contents in our Org docs.
+#+begin_src emacs-lisp
+  (use-package toc-org
     :ensure t
-    :hook (dired-mode . (lambda () (all-the-icons-dired-mode t))))
+    :commands toc-org-enable
+    :init (add-hook 'org-mode-hook 'toc-org-enable))
+#+end_src
+
+** Enable Org Bullets
+Org-bullets gives us attractive bullets rather than asterisks.
+#+begin_src emacs-lisp
+  (add-hook 'org-mode-hook 'org-indent-mode)
+  (use-package org-bullets
+    :ensure t)
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+#+end_src
+
+** Org Tempo (Block Tag Expansion)
+Org-tempo is not a separate package but a module within org that can be enabled.  Org-tempo allows for '<s' followed by TAB to expand to a begin_src tag.  Other expansions available include:
+
+| Typing the below + TAB | Expands to ...                          |
+|------------------------+-----------------------------------------|
+| <a                     | '#+BEGIN_EXPORT ascii' … '#+END_EXPORT  |
+| <c                     | '#+BEGIN_CENTER' … '#+END_CENTER'       |
+| <C                     | '#+BEGIN_COMMENT' … '#+END_COMMENT'     |
+| <e                     | '#+BEGIN_EXAMPLE' … '#+END_EXAMPLE'     |
+| <E                     | '#+BEGIN_EXPORT' … '#+END_EXPORT'       |
+| <h                     | '#+BEGIN_EXPORT html' … '#+END_EXPORT'  |
+| <l                     | '#+BEGIN_EXPORT latex' … '#+END_EXPORT' |
+| <q                     | '#+BEGIN_QUOTE' … '#+END_QUOTE'         |
+| <s                     | '#+BEGIN_SRC' … '#+END_SRC'             |
+| <v                     | '#+BEGIN_VERSE' … '#+END_VERSE'         |
+
+#+begin_src emacs-lisp 
+(require 'org-tempo)
+#+end_src
+
+* Packages
+
+** Ace Window
+Quickly switch windows in Emacs.
+#+begin_src emacs-lisp
+  (use-package ace-window
+    :ensure t
+    :custom
+    ;; Set Group of Keys For Windows
+    (aw-keys '(?q ?w ?e ?r ?t ?y ?u ?i ?o ?p))
+    :config
+    (ace-window-display-mode 1))
 #+end_src
 
 ** Buffer Move
+This file is for lazy people wanting to swap buffers without typing C-x b on each window.
 #+begin_src emacs-lisp
-  (require 'windmove)
+  (use-package buffer-move
+    :ensure t)
+#+end_src
 
-  ;;;###autoload
-  (defun buf-move-up ()
-  "Swap the current buffer and the buffer above the split.
-If there is no split, ie now window above the current one, an
-error is signaled."
-  ;;  "Switches between the current buffer, and the buffer above the
-  ;;  split, if possible."
-    (interactive)
-    (let* ((other-win (windmove-find-other-window 'up))
-	   (buf-this-buf (window-buffer (selected-window))))
-      (if (null other-win)
-          (error "No window above this one")
-        ;; swap top with this one
-        (set-window-buffer (selected-window) (window-buffer other-win))
-        ;; move this one to top
-        (set-window-buffer other-win buf-this-buf)
-        (select-window other-win))))
-
-  ;;;###autoload
-  (defun buf-move-down ()
-  "Swap the current buffer and the buffer under the split.
-If there is no split, ie now window under the current one, an
-error is signaled."
-    (interactive)
-    (let* ((other-win (windmove-find-other-window 'down))
-	   (buf-this-buf (window-buffer (selected-window))))
-      (if (or (null other-win) 
-              (string-match "^ \\*Minibuf" (buffer-name (window-buffer other-win))))
-          (error "No window under this one")
-        ;; swap top with this one
-        (set-window-buffer (selected-window) (window-buffer other-win))
-        ;; move this one to top
-        (set-window-buffer other-win buf-this-buf)
-        (select-window other-win))))
-
-  ;;;###autoload
-  (defun buf-move-left ()
-  "Swap the current buffer and the buffer on the left of the split.
-If there is no split, ie now window on the left of the current
-one, an error is signaled."
-    (interactive)
-    (let* ((other-win (windmove-find-other-window 'left))
-	   (buf-this-buf (window-buffer (selected-window))))
-      (if (null other-win)
-          (error "No left split")
-        ;; swap top with this one
-        (set-window-buffer (selected-window) (window-buffer other-win))
-        ;; move this one to top
-        (set-window-buffer other-win buf-this-buf)
-        (select-window other-win))))
-
-  ;;;###autoload
-  (defun buf-move-right ()
-  "Swap the current buffer and the buffer on the right of the split.
-If there is no split, ie now window on the right of the current
-one, an error is signaled."
-    (interactive)
-    (let* ((other-win (windmove-find-other-window 'right))
-	   (buf-this-buf (window-buffer (selected-window))))
-      (if (null other-win)
-          (error "No right split")
-        ;; swap top with this one
-        (set-window-buffer (selected-window) (window-buffer other-win))
-        ;; move this one to top
-        (set-window-buffer other-win buf-this-buf)
-        (select-window other-win))))
+** Cape
+Cape provides Completion At Point Extensions which can be used in combination with Corfu, Company or the default completion UI. The completion backends used by completion-at-point are so called completion-at-point-functions (Capfs).
+#+begin_src emacs-lisp
+  (use-package cape
+    :ensure t
+    :init
+    (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+    (add-to-list 'completion-at-point-functions #'cape-file)
+    (add-to-list 'completion-at-point-functions #'cape-elisp-block))
 #+end_src
 
 ** Centaur Tabs
+This projects aims to become an aesthetic, functional and efficient tabs plugin for Emacs with a lot of customization options.
 #+begin_src emacs-lisp
   (use-package centaur-tabs
     :ensure t
     :demand
+    :custom
+    (centaur-tabs-style "bar")
+    (centaur-tabs-set-bar 'left)
+    (centaur-tabs-icon-type 'nerd-icons)
+    (centaur-tabs-set-icons t)
+    (centaur-tabs-gray-out-icons 'buffer)
+    (centaur-tabs-set-modified-marker t)
+    (centaur-tabs-label-fixed-length 12)
+    (centaur-tabs-cycle-scope 'tabs)
     :config
-    ;; Bar
-    (setq centaur-tabs-style "box"
-    		centaur-tabs-set-bar 'under
-    		x-underline-at-descent-line t
-    		centaur-tabs-icon-type 'all-the-icons
-    		centaur-tabs-set-icons t
-    		centaur-tabs-gray-out-icons 'buffer
-    		centaur-tabs-set-modified-marker t
-    		centaur-tabs-label-fixed-length 12)
-
-    ;; Cycle only through buffers from group
-    (setq centaur-tabs-cycle-scope 'tabs)
-
-    ;; Enable Centaur Tab Mode
     (centaur-tabs-mode t)
-
-    ;; Rules to Group Tabs
-    (defun centaur-tabs-buffer-groups ()
-      "`centaur-tabs-buffer-groups' control buffers' group rules.
-
-  Group centaur-tabs with mode if buffer is derived from `eshell-mode' `emacs-lisp-mode' `dired-mode' `org-mode' `magit-mode'.
-  All buffer name start with * will group to \"Emacs\".
-  Other buffer group by `centaur-tabs-get-group-name' with project name."
-      (list
-       (cond
-        ;; ((not (eq (file-remote-p (buffer-file-name)) nil))
-        ;; "Remote")
-        ((or (string-equal "*" (substring (buffer-name) 0 1))
-             (memq major-mode '(magit-process-mode
-                                magit-status-mode
-                                magit-diff-mode
-                                magit-log-mode
-                                magit-file-mode
-                                magit-blob-mode
-                                magit-blame-mode
-                                )))
-         "Emacs")
-        ((derived-mode-p 'prog-mode)
-         "Editing")
-        ((derived-mode-p 'dired-mode)
-         "Dired")
-        ((memq major-mode '(helpful-mode
-                            help-mode))
-         "Help")
-        ((memq major-mode '(org-mode
-                            org-agenda-clockreport-mode
-                            org-src-mode
-                            org-agenda-mode
-                            org-beamer-mode
-                            org-indent-mode
-                            org-bullets-mode
-                            org-cdlatex-mode
-                            org-agenda-log-mode
-                            diary-mode))
-         "OrgMode")
-        (t
-         (centaur-tabs-get-group-name (current-buffer))))))
-    (setq centaur-tabs-buffer-groups-function 'centaur-tabs-buffer-groups)
     (centaur-tabs-group-by-projectile-project)
     :hook
-    (dashboard-mode . centaur-tabs-local-mode)
-    (term-mode . centaur-tabs-local-mode)
-    (vterm-mode . centaur-tabs-local-mode)
-    (gptel-mode . centaur-tabs-local-mode)
-    (neotree-mode . centaur-tabs-local-mode)
-    :bind
-    (("C-<" . centaur-tabs-backward)
-     ("C->" . centaur-tabs-forward)))
+    (dashboard-mode        . centaur-tabs-local-mode)
+    (term-mode             . centaur-tabs-local-mode)
+    (vterm-mode            . centaur-tabs-local-mode)
+    (gptel-mode            . centaur-tabs-local-mode)
+    (neotree-mode          . centaur-tabs-local-mode)
+    (imenu-list-major-mode . centaur-tabs-local-mode))
 #+end_src
 
-** Company
+** Corfu
+Corfu enhances in-buffer completion with a small completion popup. The current candidates are shown in a popup below or above the point, and can be selected by moving up and down. Corfu is the minimalistic in-buffer completion counterpart of the Vertico minibuffer UI.
 #+begin_src emacs-lisp
-  (use-package company
+  (use-package corfu
     :ensure t
-    :defer 2
-    :diminish
     :custom
-    (company-begin-commands '(self-insert-command))
-    (company-idle-delay .1)
-    (company-minimum-prefix-length 2)
-    (company-show-numbers t)
-    (company-tooltip-align-annotations 't)
-    (global-company-mode t))
+    (corfu-auto t)
+    ;;(corfu-preselect 'directory)
+    (corfu-auto-delay 0.1)
+    (corfu-preview-current nil)
+    :init
+    (global-corfu-mode)
+    :config
+    ;; Free the RET key for less intrusive behavior.
+    ;; Option 1: Unbind RET completely
+    ;; (keymap-unset corfu-map "RET")
+    ;; Option 2: Use RET only in shell modes
+    (keymap-set corfu-map "RET" `( menu-item "" nil :filter
+  								 ,(lambda (&optional _)
+  									(and (derived-mode-p 'eshell-mode 'comint-mode)
+  										 #'corfu-send)))))
 
-  (use-package company-box
-    :ensure t
-    :after company
-    :diminish
-    :hook (company-mode . company-box-mode))
+  (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter)
+
+  (when (<= emacs-major-version 31)
+    (use-package corfu-terminal
+  	:ensure t
+  	:config
+  	(unless (display-graphic-p)
+  	  corfu-terminal-mode +1)))
 #+end_src
 
 ** Dashboard
+Emacs Dashboard is an extensible startup screen showing you recent files, bookmarks, agenda items and an Emacs banner.
 #+begin_src emacs-lisp
   (use-package dashboard
     :ensure t 
@@ -631,7 +536,7 @@ one, an error is signaled."
     (dashboard-modify-heading-icons '((recents . "file-text")
                                       (bookmarks . "book")))
     (initial-buffer-choice 'dashboard-open)
-    (dashboard-icon-types 'all-the-icons)
+    (dashboard-icon-types 'nerd-icons)
     (dashboard-set-heading-icons t)
     (dashboard-set-file-icons t)
     (dashboard-display-icons-p t)
@@ -650,6 +555,7 @@ one, an error is signaled."
 #+end_src
 
 ** Diminish
+This package implements hiding or abbreviation of the modeline displays (lighters) of minor-modes.  With this package installed, you can add ‘:diminish’ to any use-package block to hide that particular mode in the modeline.
 #+begin_src emacs-lisp
   (use-package diminish
     :ensure t)
@@ -668,32 +574,35 @@ one, an error is signaled."
 #+end_src
 
 ** Doom Modeline
+A fancy and fast mode-line inspired by minimalism design.
 #+begin_src emacs-lisp
   (use-package doom-modeline
     :ensure t
-    :init (doom-modeline-mode 1)
-    :config
-    (setq doom-modeline-project-detection 'auto
-  		doom-modeline-buffer-file-name-style 'realative-from-project
-  		doom-modeline-major-mode-icon t
-  		doom-modeline-lsp t
-  		doom-modeline-lsp-icon t
-  		doom-modeline-buffer-name t
-  		doom-modeline-minor-modes nil
-  		doom-modeline-total-line-number t
-  		doom-modeline-percent-position nil))
+    :custom
+    (doom-modeline-project-detection 'auto)
+    (doom-modeline-buffer-file-name-style 'realative-from-project)
+    (doom-modeline-major-mode-icon t)
+    (doom-modeline-lsp t)
+    (doom-modeline-lsp-icon t)
+    (doom-modeline-buffer-name t)
+    (doom-modeline-minor-modes nil)
+    (doom-modeline-total-line-number t)
+    (doom-modeline-percent-position nil)
+    :init 
+    (doom-modeline-mode 1))
 #+end_src
 
-** Emmet
+** Eglot
+A client for Language Server Protocol servers.
 #+begin_src emacs-lisp
-  (use-package emmet-mode
-    :ensure t
-    :config
-    (add-hook 'sgml-mode-hook 'emmet-mode) ;; Auto-start on any markup modes
-    (add-hook 'css-mode-hook  'emmet-mode)) ;; enable Emmet's css abbreviation.
+    (use-package eglot
+      :ensure t
+  	:config
+  	(add-hook 'prog-mode-hook 'eglot-ensure))
 #+end_src
 
 ** Exec Path From Shell
+A GNU Emacs library to ensure environment variables inside Emacs look the same as in the user's shell.
 #+begin_src emacs-lisp
   (use-package exec-path-from-shell
     :ensure t
@@ -701,7 +610,27 @@ one, an error is signaled."
     (exec-path-from-shell-initialize))
 #+end_src
 
+** Flycheck
+Modern on-the-fly syntax checking extension for GNU Emacs.
+#+begin_src emacs-lisp
+  (use-package flycheck
+    :ensure t
+    :init 
+    (global-flycheck-mode +1))
+#+end_src
+
+** Flycheck-Eglot
+A simple “glue” minor mode that allows Flycheck and Eglot to work together. Thus, the Flycheck frontend can display the results of syntactic checks performed by the LSP server.
+#+begin_src emacs-lisp
+  (use-package flycheck-eglot
+    :ensure t
+    :after (flycheck eglot)
+    :config
+    (global-flycheck-eglot-mode 1))
+#+end_src
+
 ** Gptel
+gptel is a simple Large Language Model chat client for Emacs, with support for multiple models and backends. It works in the spirit of Emacs, available at any time and uniformly in any buffer.
 #+begin_src emacs-lisp
   ;; Check package repo for more options
   ;; https://github.com/karthink/gptel
@@ -715,6 +644,7 @@ one, an error is signaled."
 #+end_src
 
 ** Highlight Indent Guides
+This minor mode highlights indentation levels via font-lock. Indent widths are dynamically discovered, which means this correctly highlights in any mode, regardless of indent width, even in languages with non-uniform indentation such as Haskell. By default, this mode also inspects your theme dynamically, and automatically chooses appropriate colors for highlighting. This mode works properly around hard tabs and mixed indentation, and it behaves well in large buffers.
 #+begin_src emacs-lisp
   (use-package highlight-indent-guides
     :ensure t
@@ -723,17 +653,47 @@ one, an error is signaled."
     :config
     (setq highlight-indent-guides-method 'character)
     (setq highlight-indent-guides-character ?\|)
-    (setq highlight-indent-guides-responsive 'top))
-  (set-face-background 'highlight-indent-guides-odd-face "darkgray")
+    (setq highlight-indent-guides-responsive 'stack)
+    (setq highlight-indent-guides-auto-character-face-perc 80))
 #+end_src
 
-** Ivy (Counsel)
+** Imenu List
+This Emacs minor-mode creates an automatically updated buffer called *Ilist* that is populated with the current buffer's imenu entries. The *Ilist* buffer is typically shown as a sidebar (Emacs vertically splits the window).
+#+begin_src emacs-lisp
+   (use-package imenu-list
+     :ensure t
+     :custom
+     (imenu-list-focus-after-activation t)
+     (imenu-list-auto-resize t)
+     (imenu-list-position 'left)
+     :hook
+     (imenu-list-major-mode . (lambda ()(display-line-numbers-mode -1))))
+
+
+   ;; Make imenu-list size stable
+   (defun my/fix-imenu-size ()
+     (with-selected-window (get-buffer-window "*Ilist*")
+       (setq window-size-fixed 'width)
+       (window-resize (selected-window) (- 30 (window-total-width)) t t)))
+
+   (add-hook 'imenu-list-update-hook 'my/fix-imenu-size)
+#+end_src
+
+** Ivy/Counsel/Swiper
+Ivy is a generic completion mechanism for Emacs. While it operates similarly to other completion schemes such as icomplete-mode, Ivy aims to be more efficient, smaller, simpler, and smoother to use yet highly customizable.
+
+Counsel takes this further, providing versions of common Emacs commands that are customized to make the best use of Ivy. 
+
+Swiper is an alternative to Isearch that uses Ivy to show an overview of all matches.
 #+begin_src emacs-lisp
   (use-package counsel
     :ensure t
     :diminish
     :after ivy
-    :config (counsel-mode))
+    :custom
+    (ivy-initial-inputs-alist nil) ;; Remove starting ^ regex in M-x
+    :config 
+    (counsel-mode))
 
   (use-package ivy
     :ensure t
@@ -749,21 +709,18 @@ one, an error is signaled."
     :config
       (ivy-mode))
 
-  (use-package all-the-icons-ivy-rich
-    :ensure t
-    :init (all-the-icons-ivy-rich-mode 1))
-
   (use-package ivy-rich
     :ensure t
     :after ivy
     :init (ivy-rich-mode 1) ;; this gets us descriptions in M-x.
     :custom
-      (ivy-virtual-abbreviate 'full
-      ivy-rich-switch-buffer-align-virtual-buffer t
-      ivy-rich-path-style 'abbrev))
+    (ivy-virtual-abbreviate 'full)
+    (ivy-rich-switch-buffer-align-virtual-buffer t)
+    (ivy-rich-path-style 'abbrev))
 #+end_src
 
-** move-text
+** Move-text
+MoveText allows you to move the current line using M-up / M-down (or any other bindings you choose) if a region is marked, it will move the region instead.
 #+begin_src emacs-lisp
   (use-package move-text
     :ensure t
@@ -781,6 +738,7 @@ one, an error is signaled."
 #+end_src
 
 ** Neotree
+A emacs tree plugin like NerdTree for Vim.
 #+begin_src emacs-lisp
   (use-package neotree
     :ensure t
@@ -801,41 +759,14 @@ one, an error is signaled."
                   (with-current-buffer (get-buffer neo-buffer-name)
                     (setq truncate-lines t)
                     (setq word-wrap nil)
-  				  (setq neo-theme 
-  						(if (display-graphic-p) 'icons 'arrow))
+  				  (setq neo-theme 'nerd-icons)
   				  (display-line-numbers-mode -1)
                     (make-local-variable 'auto-hscroll-mode)
-  				  (setq auto-hscroll-mode nil))))
-    )
-
-  ;; Neotree
-  (global-set-key
-   (kbd "<f8>") 'neotree-toggle)
-#+end_src
-
-** Org Mode
-*** Enable Table of Contents
-#+begin_src emacs-lisp
-  (use-package toc-org
-    :ensure t
-    :commands toc-org-enable
-    :init (add-hook 'org-mode-hook 'toc-org-enable))
-#+end_src
-
-*** Enable Org Bullets
-#+begin_src emacs-lisp
-  (add-hook 'org-mode-hook 'org-indent-mode)
-  (use-package org-bullets
-    :ensure t)
-  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
-#+end_src
-
-*** Disable Eletric Indent
-#+begin_src emacs-lisp
-  (electric-indent-mode -1)
+  				  (setq auto-hscroll-mode nil)))))
 #+end_src
 
 ** Paredit
+Minor mode for editing parentheses.
 #+begin_src emacs-lisp
   (use-package paredit
     :ensure t)
@@ -850,6 +781,7 @@ one, an error is signaled."
 #+end_src
 
 ** Projectile
+Projectile is a project interaction library for Emacs. It provides a powerful set of features operating at the project level, as well as simple heuristics to identify projects.
 #+begin_src emacs-lisp
   (use-package projectile
     :ensure t
@@ -858,6 +790,7 @@ one, an error is signaled."
 #+end_src
 
 ** Rainbow Delimiters
+rainbow-delimiters is a "rainbow parentheses"-like mode which highlights delimiters such as parentheses, brackets or braces according to their depth. Each successive level is highlighted in a different color. This makes it easy to spot matching delimiters, orient yourself in the code, and tell which statements are at a given depth.
 #+begin_src emacs-lisp
   (use-package rainbow-delimiters
     :ensure t)
@@ -866,10 +799,9 @@ one, an error is signaled."
 #+end_src
 
 ** Repeat Mode
+Buitin mode for repeating commands in emacs.
 #+begin_src emacs-lisp
   (use-package repeat
-	:ensure t
-	:hook (after-init . repeat-mode)
 	:config
 	(repeat-mode 1)
 	:custom
@@ -877,37 +809,26 @@ one, an error is signaled."
 	(repeat-exit-timeout 5))
 #+end_src
 
-** Source Code Block Tag Expansion
-Org-tempo is not a separate package but a module within org that can be enabled.  Org-tempo allows for '<s' followed by TAB to expand to a begin_src tag.  Other expansions available include:
-
-| Typing the below + TAB | Expands to ...                          |
-|------------------------+-----------------------------------------|
-| <a                     | '#+BEGIN_EXPORT ascii' … '#+END_EXPORT  |
-| <c                     | '#+BEGIN_CENTER' … '#+END_CENTER'       |
-| <C                     | '#+BEGIN_COMMENT' … '#+END_COMMENT'     |
-| <e                     | '#+BEGIN_EXAMPLE' … '#+END_EXAMPLE'     |
-| <E                     | '#+BEGIN_EXPORT' … '#+END_EXPORT'       |
-| <h                     | '#+BEGIN_EXPORT html' … '#+END_EXPORT'  |
-| <l                     | '#+BEGIN_EXPORT latex' … '#+END_EXPORT' |
-| <q                     | '#+BEGIN_QUOTE' … '#+END_QUOTE'         |
-| <s                     | '#+BEGIN_SRC' … '#+END_SRC'             |
-| <v                     | '#+BEGIN_VERSE' … '#+END_VERSE'         |
-
-#+begin_src emacs-lisp 
-(require 'org-tempo)
-#+end_src
-
 ** Sudo Edit
+Utilities for opening files with sudo.
 #+begin_src emacs-lisp
   (use-package sudo-edit
+    :ensure t)
+#+end_src
+
+** Treesit-auto
+Automatically install and use tree-sitter major modes in Emacs 29+. If the tree-sitter version can’t be used, fall back to the original major mode.
+#+begin_src emacs-lisp
+  (use-package treesit-auto
     :ensure t
-    :config
-      (my-leader-def
-        "f s" '(sudo-edit-find-file :wk "sudo find file")
-        "f e" '(sudo-edit :wk "sudo edit file")))
+    :custom
+    (treesit-auto-install 'prompt))
 #+end_src
 
 ** Web Mode
+web-mode.el is an emacs major mode for editing web templates aka HTML files embedding parts (CSS/JavaScript) and blocks (pre rendered by client/server side engines).
+
+web-mode.el is compatible with many template engines: PHP, JSP, ASP, Django, Twig, Jinja, Mustache, ERB, FreeMarker, Velocity, Cheetah, Smarty, CTemplate, Mustache, Blade, ErlyDTL, Go Template, Dust.js, Google Closure (soy), React/JSX, Angularjs, ejs, Nunjucks, etc.
 #+begin_src emacs-lisp
   (use-package web-mode
     :ensure t
@@ -929,42 +850,147 @@ Org-tempo is not a separate package but a module within org that can be enabled.
      web-mode-enable-auto-opening t
      web-mode-enable-auto-pairing t
      web-mode-enable-auto-indentation t)
-    :mode
-    (".html$" "*.php$" "*.tsx"))
+    :mode 
+    (("\\.html\\'" . web-mode)
+       ("\\.php\\'" . web-mode)
+       ("\\.tsx\\'" . web-mode)))
 #+end_src
 
 ** Which-Key
+Minor mode for Emacs that displays the key bindings following your currently entered incomplete command (a prefix) in a popup.
 #+begin_src emacs-lisp
   (use-package which-key
-    :ensure t
     :diminish
+    :custom
+    (which-key-side-window-location 'bottom)
+    (which-key-sort-order #'which-key-key-order-alpha)
+    (which-key-sort-uppercase-first nil)
+    (which-key-add-column-padding 1)
+    (which-key-max-display-columns nil)
+    (which-key-min-display-lines 6)
+    (which-key-side-window-slot -10)
+    (which-key-side-window-max-height 0.25)
+    (which-key-idle-delay 0.8)
+    (which-key-max-description-length 25)
+    (which-key-allow-imprecise-window-fit nil)
+    (which-key-separator " → " )
     :init  
-    (which-key-mode 1)
-    :config
-    (setq which-key-side-window-location 'bottom
-          which-key-sort-order #'which-key-key-order-alpha
-          which-key-sort-uppercase-first nil
-          which-key-add-column-padding 1
-          which-key-max-display-columns nil
-          which-key-min-display-lines 6
-          which-key-side-window-slot -10
-          which-key-side-window-max-height 0.25
-          which-key-idle-delay 0.8
-          which-key-max-description-length 25
-          which-key-allow-imprecise-window-fit nil
-          which-key-separator " → " ))
+    (which-key-mode 1))
 #+end_src
 
 ** Zoom
+This minor mode takes care of managing the window sizes by enforcing a fixed and automatic balanced layout where the currently selected window is resized according to zoom-size which can be an absolute value in lines/columns, a ratio between the selected window and frame size or even a custom callback.
 #+begin_src emacs-lisp
+  (defun my-zoom-predicate-p ()
+    "Return t if the current buffer has fewer than 20 lines."
+    (< (count-lines (point-min) (point-max)) 20))
+
   (use-package zoom
-      :ensure t
-      :init
-      (zoom-mode t)
-      :custom
-      (zoom-size '(0.618 . 0.618))
-      (zoom-ignore-predicates '((lambda () 
-  								(< (count-lines (point-min) (point-max)) 20)))))
+    :ensure t
+    :init
+    (zoom-mode t)
+    :custom
+    (zoom-ignored-major-modes '(ivy-posframe-mode))
+    (zoom-size '(0.618 . 0.618))
+    (zoom-ignore-predicates '(my-zoom-predicate-p)))
+#+end_src
+
+* Languages
+Adds support to various programming languages.
+
+** C/C++
+*** LSP (Eglot)
+#+begin_src emacs-lisp
+  (add-to-list 'eglot-server-programs 
+    	     '((c++-mode c-mode) "clangd"))
+#+end_src
+
+** Haskell
+*** Major Mode
+#+begin_src emacs-lisp
+  (use-package haskell-mode
+    :ensure t
+    :config
+    (add-hook 'haskell-mode-hook 'interactive-haskell-mode))
+#+end_src
+
+*** LSP (Eglot)
+#+begin_src emacs-lisp
+  (add-to-list 'eglot-server-programs
+               '(haskell-mode . ("haskell-language-server-wrapper" "--lsp")))
+#+end_src
+
+** Standard ML (SML)
+*** Major Mode
+#+begin_src emacs-lisp
+  (use-package sml-mode
+    :ensure t)
+#+end_src
+
+** Mardown
+*** Major Mode
+#+begin_src emacs-lisp
+  (use-package markdown-mode
+    :ensure t
+    :init (setq markdown-command "multimarkdown")
+    :bind (:map markdown-mode-map
+                ("C-c C-e" . markdown-do))
+    :config
+    (add-to-list 'auto-mode-alist '("README\\.md\\'" . gfm-mode))
+    (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
+    (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode)))
+#+end_src
+
+** OCaml
+*** Major Mode
+#+begin_src emacs-lisp
+  (use-package caml
+    :ensure t)
+
+  (use-package tuareg
+    :ensure t
+    :mode (("\\.ocamlinit\\'" . tuareg-mode)))
+#+end_src
+
+** Python
+*** Tools
+#+begin_src emacs-lisp
+  ;;Python virtual environments for emacs.
+  ;;Use M-x pyvenv-workon to change python version to local. 
+  (use-package pyvenv
+    :ensure t
+    :init
+    (setenv "WORKON_HOME" "~/.pyenv/versions"))
+#+end_src
+
+** Qml
+*** Major Mode
+#+begin_src emacs-lisp
+  (use-package qml-mode
+    :ensure t)
+
+  (add-to-list 'auto-mode-alist '("\\.qml\\'" . qml-mode))
+#+end_src
+
+*** LSP (Eglot)
+#+begin_src emacs-lisp
+  (add-to-list 'eglot-server-programs
+  	     '((qml-mode qml-ts-mode) "qmlls6"))
+#+end_src
+
+** Racket
+*** Major Mode
+#+begin_src emacs-lisp
+  (use-package racket-mode
+    :ensure t)
+#+end_src
+
+** Shell Scripts
+*** LSP (Eglot)
+#+begin_src emacs-lisp
+  ;; Shell Scripts
+  (add-to-list 'eglot-server-programs
+      		 '((sh-mode bash-ts-mode) "bash-language-server" "start"))
 #+end_src
 
 * Terminals
@@ -988,7 +1014,7 @@ Install CMake, libtools and libvterm before if errors occurs.
   (use-package vterm
     :ensure t
     :config
-    (setq shell-file-name "/bin/bash"
+    (setq shell-file-name "/bin/zsh"
           vterm-max-scrollback 5000))
 
   (use-package vterm-toggle
